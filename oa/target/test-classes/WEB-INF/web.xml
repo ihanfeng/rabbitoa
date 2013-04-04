@@ -63,6 +63,14 @@
 	    <filter-name>shiroFilter</filter-name>
 	    <url-pattern>/*</url-pattern>
 	</filter-mapping>
+	<filter>
+	    <filter-name>casCallBackFilter</filter-name>
+	    <filter-class>com.zhm.rabbit.oa.shiro.CasCallBackFilter</filter-class>
+	</filter>
+	<filter-mapping>
+	    <filter-name>casCallBackFilter</filter-name>
+	    <url-pattern>/*</url-pattern>
+	</filter-mapping>
 	<servlet>
 	  <servlet-name>CXFServlet</servlet-name>
 	  <servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
