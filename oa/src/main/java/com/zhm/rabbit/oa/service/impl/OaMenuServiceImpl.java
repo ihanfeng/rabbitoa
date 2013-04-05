@@ -4,12 +4,14 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.Lists;
-import com.zhm.rabbit.oa.dao.OaMenuRepository;
 import com.zhm.rabbit.oa.repositories.OaMenu;
+import com.zhm.rabbit.oa.repositories.dao.OaMenuRepository;
 import com.zhm.rabbit.oa.service.OaMenuService;
 @Service("oaMenuService")
+@Transactional(readOnly=true)
 public class OaMenuServiceImpl implements OaMenuService {
 
 	@Autowired

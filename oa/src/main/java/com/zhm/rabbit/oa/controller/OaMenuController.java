@@ -14,10 +14,5 @@ import com.zhm.rabbit.oa.service.OaMenuService;
 public class OaMenuController {
 	@Autowired
 	private OaMenuService oaMenuService;
-	@RequestMapping(value="/oaMenuManager/findAll")
-	public @ResponseBody List<OaMenu> findAll()
-	{
-		List<OaMenu> menus = oaMenuService.findAll();
-		return menus;
-	}
+	
 }

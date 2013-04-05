@@ -1,5 +1,7 @@
 package com.zhm.rabbit.oa.repositories;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,7 +21,12 @@ import org.hibernate.annotations.DynamicUpdate;
 @DynamicInsert 
 @DynamicUpdate
 @Table(name="dept_role") 
-public class DepartmentRole {
+public class DepartmentRole implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")

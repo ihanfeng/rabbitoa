@@ -3,6 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>RabbitOA系统</title>
+    <META http-equiv=Content-Type content="text/html; charset=utf-8">
     <link href="${cpath}/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" /> 
     <script src="${cpath}/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>    
     <script src="${cpath}/ligerUI/js/ligerui.min.js" type="text/javascript"></script> 
@@ -32,12 +33,17 @@
                 $(this).removeClass("l-link-over");
             });
             //树
-            $("#tree1").ligerTree({
-                url : ${cpath}/oaMenusManager/findAll.html,
-                checkbox: false,
+            var data = [];
+            <#list menus as item>
+            	data.push({ id: ${item.id}, pid: ${item.pid}, text: '${item.name}'<#if item.url?exists>,url:'${cpath}${item.url}'</#if> });
+            </#list>
+    		$("#tree1").ligerTree({
+                data : data,
+                idFieldName :'id',
+            	parentIDFieldName :'pid',
+            	checkbox: false,
                 slide: false,
                 nodeWidth: 120,
-                attribute: ['name', 'url'],
                 onSelect: function (node)
                 {
                     if (!node.data.url) return;
@@ -49,10 +55,11 @@
                     } 
                     f_addTab(tabid, node.data.text, node.data.url);
                 }
+            	
             });
+            tree = $("#tree1").ligerGetTreeManager();
             tab = $("#framecenter").ligerGetTabManager();
             accordion = $("#accordion1").ligerGetAccordionManager();
-            //tree = $("#tree1").ligerGetTreeManager();
             $("#pageloading").hide();
 
         });
@@ -77,7 +84,7 @@
     .l-link2{text-decoration:underline; color:white; margin-left:2px;margin-right:2px;}
     .l-layout-top{background:#102A49; color:White;}
     .l-layout-bottom{ background:#E5EDEF; text-align:center;}
-    #pageloading{position:absolute; left:0px; top:0px; background:white url('loading.gif') no-repeat center; width:100%; height:100%;z-index:99999;}
+    #pageloading{position:absolute; left:0px; top:0px; background:white url('${cpath}/images/loading.gif') no-repeat center; width:100%; height:100%;z-index:99999;}
     .l-link{ display:block; line-height:22px; height:22px; padding-left:16px;border:1px solid white; margin:4px;}
     .l-link-over{ background:#FFEEAC; border:1px solid #DB9F00;} 
     .l-winbar{ background:#2B5A76; height:30px; position:absolute; left:0px; bottom:0px; width:100%; z-index:99999;}
@@ -93,13 +100,11 @@
 <body style="padding:0px;background:#EAEEF5;">  
 <div id="pageloading"></div>  
 <div id="topmenu" class="l-topmenu">
-    <div class="l-topmenu-logo">jQuery ligerUI Demos导航主页</div>
+    <div class="l-topmenu-logo">Rabbit OA</div>
     <div class="l-topmenu-welcome">
-        <a href="index.aspx" class="l-link2">服务器版本</a>
+        <a href="#" class="l-link2">个人信息</a>
         <span class="space">|</span>
-        <a href="https://me.alipay.com/daomi" class="l-link2" target="_blank">捐赠</a> 
-        <span class="space">|</span>
-         <a href="http://bbs.ligerui.com" class="l-link2" target="_blank">论坛</a>
+        <a href="#" class="l-link2" target="_blank">修改密码</a> 
     </div> 
 </div>
   <div id="layout1" style="width:99.2%; margin:0 auto; margin-top:4px; "> 

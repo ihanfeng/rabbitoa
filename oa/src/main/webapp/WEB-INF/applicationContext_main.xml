@@ -26,7 +26,7 @@
        	<import resource="classpath:config/cxf-services.xml" /> 
        	<!-- 工作流 activiti配置 -->
         <import resource="classpath:config/activitiConfig.xml" />  
-        <jpa:repositories base-package="com.zhm.rabbit.oa.repositories" />
+        <jpa:repositories base-package="com.zhm.rabbit.oa.repositories.dao" />
         <!-- 分布式缓存 memcached配置 begin -->
         <import resource="classpath:config/simplesm-context.xml" />     
         <bean name="defaultMemcachedClient" class="com.google.code.ssm.CacheFactory">           
@@ -111,7 +111,7 @@
 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
         <property name="dataSource"><ref bean="dataSource"/></property>
     </bean>
-    <bean id="txManager" 
+    <bean id="transactionManager" 
           class="org.springframework.orm.jpa.JpaTransactionManager"
           p:entityManagerFactory-ref="entityManagerFactory"/>
     <bean id="entityManagerFactory" 
@@ -126,5 +126,5 @@
             </bean>
         </property>
     </bean>
-	<tx:annotation-driven transaction-manager="txManager"/>
+	<tx:annotation-driven transaction-manager="transactionManager"/>
 </beans>
