@@ -17,6 +17,12 @@
 		<jetty.version>6.1.23</jetty.version>
 		<cxf.version>2.7.0</cxf.version>
  </properties>
+ <repositories>
+	 <repository>
+		<id>kafeitu</id>
+		<url>http://server.kafeitu.me:8081/nexus/content/repositories/releases</url>
+	</repository>
+ </repositories>
  <dependencies>
 	<dependency>
         <groupId>junit</groupId>

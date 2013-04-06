@@ -48,7 +48,7 @@ public class CasCallBackFilter implements Filter {
 			    	 //一个是cas返回的更多属性的map对象，举例是{uid:aaa,username:aaa,email:aaa}
 			    	 //通过principals.get(1)来获得属性集合的map对象
 			    	 String username =  (String)principals.get(0);
-			    	 //根据返回的用户名/手机号查询用户信息
+			    	 //根据返回的邮箱/手机号查询用户信息
 		    		String cpath = ((HttpServletRequest)request).getContextPath();
 		    		session.setAttribute("cpath", cpath);
 			     }

@@ -12,11 +12,9 @@
                 height:'99%',
                 columns: [
                 { display: '序号', name: 'id', align: 'left', width: 100, minWidth: 60,type:'int' },
-                { display: '邮箱', name: 'email', minWidth: 120,type:'text' },
-                 { display: '手机号', name: 'mobile', minWidth: 120,type:'text' },
-                { display: '姓名', name: 'username', minWidth: 140,type:'text' },
-                { display: '部门', name: 'deptid' }
-                ], url:'${cpath}/userManager/listAll/getJson.html',  pageSize:30 ,rownumbers:true,
+                { display: '名字', name: 'email', minWidth: 120,type:'text' },
+                 { display: '领导', name: 'mobile', minWidth: 120,type:'text' }
+                ], url:'${cpath}/deptManager/listAll/getJson.html',  pageSize:30 ,rownumbers:true,
                 dataAction: 'server', //服务器排序
                 usePager: true,       //服务器分页
                 toolbar: { items: [

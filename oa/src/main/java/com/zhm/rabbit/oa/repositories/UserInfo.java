@@ -8,58 +8,53 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+
 /**
  * 
- * @author zhmlvft
- * 用户表
+ * @author zhmlvft 用户表
  */
 @Entity
-@DynamicInsert 
+@DynamicInsert
 @DynamicUpdate
-@Table(name="user_info") 
-public class UserInfo implements Serializable{
-	  /**
+@Table(name = "user_info")
+public class UserInfo implements Serializable {
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	  @GeneratedValue(strategy = GenerationType.AUTO)
-	  @Column(name = "id")
-	  private int id;
-	  
-	  @Column(unique = true)
-	  private String userid;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id")
+	private int id;
 
-	  private String password;
-	  
-	  private String username;
-	  
-	  private String role;
-	  
-	  private int deptid;
-	  
-	  private String mobile;
-	  
-	  private String email;
+	private String password;
 
+	private String username;
+
+	private String role;
+
+	private int deptid;
+
+	@Column(unique = true)
+	private String mobile;
+
+	@Column(unique = true)
+	private String email;
+
+	@Transient
+	private String position;//部门职位，不是数据库字段。临时的
+	
 	public int getId() {
 		return id;
 	}
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public String getUserid() {
-		return userid;
-	}
-
-	public void setUserid(String userid) {
-		this.userid = userid;
 	}
 
 	public String getPassword() {
@@ -109,5 +104,13 @@ public class UserInfo implements Serializable{
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	  
+
+	public String getPosition() {
+		return position;
+	}
+
+	public void setPosition(String position) {
+		this.position = position;
+	}
+	
 }

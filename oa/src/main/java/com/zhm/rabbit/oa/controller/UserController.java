@@ -13,6 +13,7 @@ import com.google.common.collect.Lists;
 import com.zhm.rabbit.oa.model.LigerGridBean;
 import com.zhm.rabbit.oa.repositories.UserInfo;
 import com.zhm.rabbit.oa.service.UserService;
+import com.zhm.rabbit.oa.utils.Md5Util;
 
 @Controller
 public class UserController {
@@ -23,7 +24,7 @@ public class UserController {
 	{
 		return "/admin/user/listAll";
 	}
-	@RequestMapping(value="userManager/listAll/getJson")
+	@RequestMapping(value="/userManager/listAll/getJson")
 	public @ResponseBody LigerGridBean listAllJson(String sortname,String sortorder,int page,int pagesize)
 	{
 		
@@ -33,5 +34,40 @@ public class UserController {
 		result.setRows(users);
 		result.setTotal(pgObj.getTotalElements());
 		return result;
+	}
+	@RequestMapping(value="/userManager/preAdd")
+	public String preAdd()
+	{
+		return "/admin/user/add";
+	}
+	/**
+	 * 
+	 * @return
+	 * 验证邮箱地址是否已经存在
+	 */
+	@RequestMapping(value="/userManager/validateUserEmailExists")
+	public @ResponseBody String validateUserEmailExists(String email)
+	{
+		boolean isExists = userService.findUserExistsByEmail(email);
+		return String.valueOf(isExists);
+	}
+	/**
+	 * 验证手机号是否存在
+	 * @param mobile
+	 * @return
+	 */
+	@RequestMapping(value="/userManager/validateUserMobileExists")
+	public @ResponseBody String validateUserMobileExists(String mobile)
+	{
+		boolean isExists = userService.findUserExistsByMobile(mobile);
+		return String.valueOf(isExists);
+	}
+	@RequestMapping(value="/userManager/add")
+	public String addUser(UserInfo user)
+	{
+		user.setRole("1");
+		user.setPassword(Md5Util.stringByMD5("123456"));
+		userService.save(user);
+		return "redirect:/userManager/listAll";
 	}
 }

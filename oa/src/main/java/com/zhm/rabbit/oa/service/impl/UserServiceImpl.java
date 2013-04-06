@@ -28,5 +28,22 @@ public class UserServiceImpl implements UserService {
 		PageRequest pr = new PageRequest(page, pagesize, sortorder==null?Sort.Direction.ASC:Sort.Direction.DESC,sortname==null?"id":sortname);
 		return dao.findAll(pr);
 	}
+
+	public boolean findUserExistsByEmail(String email) {
+		// TODO Auto-generated method stub
+		List<UserInfo> users = dao.findByEmail(email);
+		return (users==null||users.size()==0)?true:false;
+	}
+
+	public boolean findUserExistsByMobile(String mobile) {
+		// TODO Auto-generated method stub
+		List<UserInfo> users = dao.findByMobile(mobile);
+		return (users==null||users.size()==0)?true:false;
+	}
+
+	public void save(UserInfo user) {
+		// TODO Auto-generated method stub
+		dao.save(user);
+	}
 	
 }

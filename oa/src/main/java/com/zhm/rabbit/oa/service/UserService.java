@@ -13,4 +13,10 @@ public interface UserService {
 	Page<UserInfo> findByPage(int page, int pagesize, String sortname,
 			String sortorder);
 
+	boolean findUserExistsByEmail(String email);
+
+	boolean findUserExistsByMobile(String mobile);
+
+	void save(UserInfo user);
+
 }
