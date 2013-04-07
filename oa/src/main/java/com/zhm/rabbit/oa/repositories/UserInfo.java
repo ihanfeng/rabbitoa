@@ -30,7 +30,7 @@ public class UserInfo implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
-	private int id;
+	private Integer id;
 
 	private String password;
 
@@ -49,11 +49,11 @@ public class UserInfo implements Serializable {
 	@Transient
 	private String position;//部门职位，不是数据库字段。临时的
 	
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

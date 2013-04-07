@@ -6,11 +6,37 @@
     	var cpath = '${cpath}';
     </script>
     <META http-equiv=Content-Type content="text/html; charset=utf-8">
-    <link href="${cpath}/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
-    <link href="${cpath}/ligerUI/skins/ligerui-icons.css" rel="stylesheet" type="text/css" />
-    <link href="${cpath}/ligerUI/skins/Silvery/css/style.css" rel="stylesheet" type="text/css" />
-    <script src="${cpath}/jquery/jquery-1.3.2.min.js" type="text/javascript"></script> 
-    <script src="${cpath}/ligerUI/js/ligerui.min.js" type="text/javascript"></script>
-    <script src="${cpath}/jquery-validation/jquery.validate.min.js" type="text/javascript"></script> 
-    <script src="${cpath}/jquery-validation/jquery.metadata.js" type="text/javascript"></script>
-    <script src="${cpath}/jquery-validation/messages_cn.js" type="text/javascript"></script>
+    <meta name="language" content="zh_CN" />
+    <link rel="stylesheet" type="text/css" href="${cpath}/jquery_ui_layout/css/layout-default-latest.css" />
+    <link rel="stylesheet" type="text/css" href="${cpath}/jquery_ui/themes/start/jquery-ui.css" />
+	<link rel="stylesheet" type="text/css" href="${cpath}/jquery_ui/themes/start/jquery.ui.theme.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="${cpath}/jqgrid/css/ui.jqgrid.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="${cpath}/jquery_ztree/css/zTreeStyle/zTreeStyle.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="${cpath}/css/main.css" />
+	<script type="text/javascript" src="${cpath}/jquery/jquery-1.8.0.js"></script>
+	<script type="text/javascript" src="${cpath}/jquery_ui/js/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="${cpath}/jquery_ui_layout/jquery.layout-latest.js"></script>
+	<script src="${cpath}/jqgrid/js/i18n/grid.locale-cn.js" type="text/javascript"></script>
+	<script src="${cpath}/jqgrid/js/jquery.jqGrid.min.js" type="text/javascript"></script>
+	<script src="${cpath}/jquery_ztree/js/jquery.ztree.all-3.5.min.js" type="text/javascript"></script>
+	<style type="text/css">
+	/* remove padding and scrolling from elements that contain an Accordion OR a content-div */
+	.ui-layout-center ,	/* has content-div */
+	.ui-layout-west ,	/* has Accordion */
+	.ui-layout-east ,	/* has content-div ... */
+	.ui-layout-east .ui-layout-content { /* content-div has Accordion */
+		padding: 0;
+		overflow: hidden;
+	}
+	.ui-layout-center P.ui-layout-content {
+		line-height:	1.4em;
+		margin:			0; /* remove top/bottom margins from <P> used as content-div */
+	}
+	h3, h4 { /* Headers & Footer in Center & East panes */
+		background:		#EEF;
+		border:			1px solid #BBB;
+		border-width:	0 0 1px;
+		padding:		7px 10px;
+		margin:			0;
+	}
+	</style>

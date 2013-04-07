@@ -8,4 +8,6 @@ public interface OaMenuService {
 
 	List<OaMenu> findAll();
 
+	List<OaMenu> findByType(int type);
+
 }

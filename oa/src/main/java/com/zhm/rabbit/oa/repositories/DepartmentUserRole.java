@@ -29,17 +29,17 @@ public class DepartmentUserRole implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
-	private int id;
+	private Integer id;
 	
 	private int deptroleid;
 	
 	private String userid;
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

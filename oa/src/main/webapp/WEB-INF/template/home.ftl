@@ -1,138 +1,224 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" 
+"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>RabbitOA系统</title>
-    <META http-equiv=Content-Type content="text/html; charset=utf-8">
-    <link href="${cpath}/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" /> 
-    <script src="${cpath}/jquery/jquery-1.3.2.min.js" type="text/javascript"></script>    
-    <script src="${cpath}/ligerUI/js/ligerui.min.js" type="text/javascript"></script> 
-    <script type="text/javascript">
-        var tab = null;
-        var accordion = null;
-        var tree = null;
-        $(function ()
-        {
+	<script type="text/javascript">
+		var cpath='${cpath}';
+	</script>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="language" content="zh_CN" />
 
-            //布局
-            $("#layout1").ligerLayout({ leftWidth: 190, height: '100%',heightDiff:-34,space:4, onHeightChanged: f_heightChanged });
+	<title>Rabbit OA系统</title>
 
-            var height = $(".l-layout-center").height();
+	<link rel="stylesheet" type="text/css" href="${cpath}/jquery_ui_layout/css/layout-default-latest.css" />
+	<link rel="stylesheet" type="text/css" href="${cpath}/jquery_ui/themes/start/jquery-ui.css" />
+	<link rel="stylesheet" type="text/css" href="${cpath}/jquery_ui/themes/start/jquery.ui.theme.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="${cpath}/jquery_ztree/css/zTreeStyle/zTreeStyle.css" />
+	<!-- CUSTOMIZE/OVERRIDE THE DEFAULT CSS -->
+	<style type="text/css">
 
-            //Tab
-            $("#framecenter").ligerTab({ height: height });
+	/* remove padding and scrolling from elements that contain an Accordion OR a content-div */
+	.ui-layout-center ,	/* has content-div */
+	.ui-layout-west ,	/* has Accordion */
+	.ui-layout-east ,	/* has content-div ... */
+	.ui-layout-east .ui-layout-content { /* content-div has Accordion */
+		padding: 0;
+		overflow: hidden;
+	}
+	.ui-layout-center P.ui-layout-content {
+		line-height:	1.4em;
+		margin:			0; /* remove top/bottom margins from <P> used as content-div */
+	}
+	.ui-accordion,.ui-accordion-content{padding:0px !important;}
+	h3, h4 { /* Headers & Footer in Center & East panes */
+		background:		#EEF;
+		border:			1px solid #BBB;
+		border-width:	0 0 1px;
+		padding:		7px 10px;
+		margin:			0;
+	}
+	.ui-layout-east h4 { /* Footer in East-pane */
+		font-weight:	normal;
+		border-width:	1px 0 0;
+	}
+	</style>
 
-            //面板
-            $("#accordion1").ligerAccordion({ height: height - 24, speed: null });
+	<!-- REQUIRED scripts for layout widget -->
+	<script type="text/javascript" src="${cpath}/jquery/jquery-1.8.0.js"></script>
+	<script type="text/javascript" src="${cpath}/jquery_ui/js/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="${cpath}/jquery_ui_layout/jquery.layout-latest.js"></script>
+	<script type="text/javascript" src="${cpath}/jquery_ui_layout/jquery.layout.resizePaneAccordions-latest.js"></script>
+	<!-- compressed: /lib/js/jquery.layout.resizePaneAccordions-latest.min.js -->
 
-            $(".l-link").hover(function ()
-            {
-                $(this).addClass("l-link-over");
-            }, function ()
-            {
-                $(this).removeClass("l-link-over");
-            });
-            //树
-            var data = [];
-            <#list menus as item>
-            	data.push({ id: ${item.id}, pid: ${item.pid}, text: '${item.name}'<#if item.url?exists>,url:'${cpath}${item.url}'</#if> });
-            </#list>
-    		$("#tree1").ligerTree({
-                data : data,
-                idFieldName :'id',
-            	parentIDFieldName :'pid',
-            	checkbox: false,
-                slide: false,
-                nodeWidth: 120,
-                onSelect: function (node)
-                {
-                    if (!node.data.url) return;
-                    var tabid = $(node.target).attr("tabid");
-                    if (!tabid)
-                    {
-                        tabid = new Date().getTime();
-                        $(node.target).attr("tabid", tabid)
-                    } 
-                    f_addTab(tabid, node.data.text, node.data.url);
-                }
-            	
-            });
-            tree = $("#tree1").ligerGetTreeManager();
-            tab = $("#framecenter").ligerGetTabManager();
-            accordion = $("#accordion1").ligerGetAccordionManager();
-            $("#pageloading").hide();
+    <script type="text/javascript" src="${cpath}/jquery_ui/themeswitchertool.js"></script>
+    <script src="${cpath}/jquery_ztree/js/jquery.ztree.all-3.5.min.js" type="text/javascript"></script> 
+	<script type="text/javascript">
+	$(document).ready( function() {
 
-        });
-        function f_heightChanged(options)
-        {
-            if (tab)
-                tab.addHeight(options.diff);
-            if (accordion && options.middleHeight - 24 > 0)
-                accordion.setHeight(options.middleHeight - 24);
-        }
-        function f_addTab(tabid,text, url)
-        { 
-            tab.addTabItem({ tabid : tabid,text: text, url: url });
-        } 
-         
-        
- </script> 
-<style type="text/css"> 
-    body,html{height:100%;}
-    body{ padding:0px; margin:0;   overflow:hidden;}  
-    .l-link{ display:block; height:26px; line-height:26px; padding-left:10px; text-decoration:underline; color:#333;}
-    .l-link2{text-decoration:underline; color:white; margin-left:2px;margin-right:2px;}
-    .l-layout-top{background:#102A49; color:White;}
-    .l-layout-bottom{ background:#E5EDEF; text-align:center;}
-    #pageloading{position:absolute; left:0px; top:0px; background:white url('${cpath}/images/loading.gif') no-repeat center; width:100%; height:100%;z-index:99999;}
-    .l-link{ display:block; line-height:22px; height:22px; padding-left:16px;border:1px solid white; margin:4px;}
-    .l-link-over{ background:#FFEEAC; border:1px solid #DB9F00;} 
-    .l-winbar{ background:#2B5A76; height:30px; position:absolute; left:0px; bottom:0px; width:100%; z-index:99999;}
-    .space{ color:#E7E7E7;}
-    /* 顶部 */ 
-    .l-topmenu{ margin:0; padding:0; height:31px; line-height:31px; background:url('${cpath}/images/top.jpg') repeat-x bottom;  position:relative; border-top:1px solid #1D438B;  }
-    .l-topmenu-logo{ color:#E7E7E7; padding-left:35px; line-height:26px;background:url('${cpath}/images/topicon.gif') no-repeat 10px 5px;}
-    .l-topmenu-welcome{  position:absolute; height:24px; line-height:24px;  right:30px; top:2px;color:#070A0C;}
-    .l-topmenu-welcome a{ color:#E7E7E7; text-decoration:underline} 
+		myLayout = $('body').layout({
+			west__size:			300
+		,	west__togglerTip_closed:	"展开"
+		,	west__togglerTip_open:	"关闭"
+		,	west__sliderTip:			"展开"
+		,	west__slideTrigger_open:	"mouseover"
+		,	east__size:			300
+		,	east__togglerTip_closed:	"展开"
+		,	east__togglerTip_open:	"关闭"
+		,	east__sliderTip:			"展开"
+		,	east__slideTrigger_open:	"mouseover"
+		,	north__togglerTip_closed:	"展开"
+		,	north__togglerTip_open:	"关闭"
+		,	north__sliderTip:			"展开"
+		,	south__togglerTip_closed:	"展开"
+		,	south__togglerTip_open:	"关闭"
+		,	south__sliderTip:			"展开"
+		, east__initClosed:     true
+		,	west__onresize:		$.layout.callbacks.resizePaneAccordions
+		,	east__onresize:		$.layout.callbacks.resizePaneAccordions
+		});
 
- </style>
+		// ACCORDION - in the West pane
+		$("#accordion1").accordion({
+			heightStyle:	"fill"
+		});
+		
+		// ACCORDION - in the East pane - in a 'content-div'
+		$("#accordion2").accordion({
+			heightStyle:	"fill"
+		});
+
+
+		// THEME SWITCHER
+		addThemeSwitcher('.ui-layout-north',{ top: '12px', right: '5px' });
+		// if a new theme is applied, it could change the height of some content,
+		// so call resizeAll to 'correct' any header/footer heights affected
+		// NOTE: this is only necessary because we are changing CSS *AFTER LOADING* using themeSwitcher
+		setTimeout( myLayout.resizeAll, 1000 ); /* allow time for browser to re-render with new theme */
+		
+		$.fn.zTree.init($("#menus"), setting, treeNodes);
+		$.fn.zTree.init($("#menus1"), setting, treeNodes);
+	});
+	//ztree
+		var setting={
+				expandSpeed: "200",
+				showLine: true,
+				fontCss: setFontCss,
+				data: {
+					simpleData: {
+						enable: true,
+						idKey: "id",
+						pIdKey: "pId",
+						rootPId: -1
+					}
+				},
+				callback: {
+					beforeDrag: beforeDrag,
+					onClick:zTreeOnClick
+				},
+				view: {
+					showLine: false,
+					dblClickExpand : false 
+				}
+			};
+			function zTreeOnClick(event, treeId, treeNode)
+			{
+					var isOpen = treeNode.open;
+					var zTree = $.fn.zTree.getZTreeObj("menus");
+					if(!isOpen)
+					{
+						zTree.expandNode(treeNode, true, false, true);
+					}
+					else
+					{
+						zTree.expandNode(treeNode, false, false, true);
+					}
+			}
+			function beforeDrag(treeId, treeNodes) {
+				return false;
+			}
+			function setFontCss(treeId, treeNode) {
+				if (treeNode.level==0 && treeNode.oldName && treeNode.oldName != treeNode.name) {
+					return {"color":"#666","font-size":"14px","font-weight":"bold"};
+				} else if (treeNode.level==0||treeNode.level==1) {
+					return {"color":"#666","font-size":"14px","font-weight":"bold"};
+				} else {
+					return {"color":"#666","font-size":"14px"};
+				}
+			}
+		var treeNodes = [
+			<#if adminMenus?exists>
+				<#list adminMenus as item>
+					<#if !item_has_next>
+						{"id":${item.id}, "pId":${item.pid}, "name":"${item.name}","url":"<#if item.url?exists>${cpath+item.url}<#else>javascript:void(0)</#if>","target":"${item.targettype}" <#if item.pid==-1>,isParent:true</#if>}
+					<#else>
+						{"id":${item.id}, "pId":${item.pid}, "name":"${item.name}","url":"<#if item.url?exists>${cpath+item.url}<#else>javascript:void(0)</#if>","target":"${item.targettype}" <#if item.pid==-1>,isParent:true</#if>},
+					</#if>
+				</#list>
+			<#else>
+				 {"id":-1, "pId":-1, "name":"该角色无菜单"}
+			</#if>
+		];
+	</script>
+
 </head>
-<body style="padding:0px;background:#EAEEF5;">  
-<div id="pageloading"></div>  
-<div id="topmenu" class="l-topmenu">
-    <div class="l-topmenu-logo">Rabbit OA</div>
-    <div class="l-topmenu-welcome">
-        <a href="#" class="l-link2">个人信息</a>
-        <span class="space">|</span>
-        <a href="#" class="l-link2" target="_blank">修改密码</a> 
-    </div> 
+<body>
+
+<div class="ui-layout-north ui-widget-content ui-state-active" style="display: none;">
+		<div style="float: right; margin-right: 160px;">
+			<button onClick="removeUITheme(); myLayout.resizeAll()">恢复默认样式</button>
+		</div>
+		<span style="font-size:30px;font-weight:bold">Rabbit OA</span>
 </div>
-  <div id="layout1" style="width:99.2%; margin:0 auto; margin-top:4px; "> 
-        <div position="left"  title="主要菜单" id="accordion1"> 
-                     <div title="功能列表" class="l-scroll">
-                         <ul id="tree1" style="margin-top:3px;">
-                         <ul>
-                    </div>
-                    <div title="应用场景">
-                    <div style=" height:7px;"></div>
-                         <a class="l-link" href="javascript:f_addTab('listpage','列表页面','demos/case/listpage.htm')">列表页面</a> 
-                         <a class="l-link" href="demos/dialog/win7.htm" target="_blank">模拟Window桌面</a> 
-                    </div>    
-                     <div title="实验室">
-                    <div style=" height:7px;"></div>
-                          <a class="l-link" href="lab/generate/index.htm" target="_blank">表格表单设计器</a> 
-                    </div> 
-        </div>
-        <div position="center" id="framecenter"> 
-            <div tabid="home" title="我的主页" style="height:300px" >
-                <iframe frameborder="0" name="home" id="home" src=""></iframe>
-            </div> 
-        </div> 
-        
-    </div>
-    <div  style="height:32px; line-height:32px; text-align:center;">
-            Copyright © 2011-2012 www.ligerui.com
-    </div>
-    <div style="display:none"></div>
+
+<div class="ui-layout-south ui-widget-content ui-state-default" style="display: none;text-align:center"> 
+	邮箱：286600136@qq.com 博客：https://zhmlvft-20120609.rhcloud.com/
+</div>
+
+<iframe id="mainFrame" name="mainFrame" class="ui-layout-center ui-widget-content"
+	width="100%" height="600" frameborder="0" scrolling="auto"
+	src="${cpath}/home/deskPage.html"  ALLOWTRANSPARENCY="true"></iframe>
+
+<div class="ui-layout-west" style="display: none;">
+	<div id="accordion1" class="basic">
+
+			<h3><a href="#">功能列表</a></h3>
+			<div>
+				
+			</div>
+
+			<h3><a href="#">后台管理</a></h3>
+			<div>
+				<div id="menus" class="ztree"></div>
+			</div>
+
+			<h3><a href="#">我的消息</a></h3>
+			<div>
+				
+			</div>
+	</div>
+</div>
+
+<div class="ui-layout-east" style="display: none;">
+	<div class="ui-layout-content">
+		<div id="accordion2" class="basic">
+
+			<h3><a href="#">功能列表</a></h3>
+			<div>
+				
+			</div>
+
+			<h3><a href="#">后台管理</a></h3>
+			<div>
+				<div id="menus1" class="ztree"></div>
+			</div>
+
+			<h3><a href="#">我的消息</a></h3>
+			<div>
+				
+			</div>
+		</div>
+	</div>
+</div>
+
 </body>
-</html>
+</html> 

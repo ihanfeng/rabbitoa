@@ -1,0 +1,93 @@
+/*
+ * Default Layout Theme
+ *
+ * Created for jquery.layout 
+ *
+ * Copyright (c) 2010 
+ *   Fabrizio Balliano (http://www.fabrizioballiano.net)
+ *   Kevin Dalman (http://allpro.net)
+ *
+ * Dual licensed under the GPL (http://www.gnu.org/licenses/gpl.html)
+ * and MIT (http://www.opensource.org/licenses/mit-license.php) licenses.
+ *
+ * Last Updated: 2010-02-10
+ * NOTE: For best code readability, view this with a fixed-space font and tabs equal to 4-chars
+ */
+
+/*
+ *	DEFAULT FONT
+ *	Just to make demo-pages look better - not actually relevant to Layout!
+ */
+body {
+	font-family: Geneva, Arial, Helvetica, sans-serif;
+	font-size:   12px;
+	*font-size:  12px;
+}
+.ui-layout-pane { /* all 'panes' */
+	padding:	10px; 
+	overflow:	auto;
+	}
+	.ui-layout-content {
+		padding:	10px;
+		padding-right:10px;
+		position:	relative; /* contain floated or positioned elements */
+		overflow:	auto; /* add scrolling to content-div */
+	}
+.ui-layout-pane-center { /* IFRAME pane */ 
+	padding: 0;
+	margin:  0;
+} 
+.ui-layout-pane-east { /* east pane */ 
+	padding:0px;
+	overflow:		hidden !important; /* prevent scrollbars auto-added by Layout */} 
+.ui-layout-pane-west { /* east pane */ 
+	padding:0px;
+	overflow:		hidden !important; /* prevent scrollbars auto-added by Layout */} 
+.ui-layout-toggler .content { /* toggler-text */ 
+	font: 14px bold Verdana, Verdana, Arial, Helvetica, sans-serif;
+}
+
+
+.ui-layout-resizer-north { background: url(../imgs/resizable-n2.png) no-repeat center; }
+
+.ui-layout-resizer-east { background: url(../imgs/resizable-e2.png) no-repeat center; }
+
+.ui-layout-resizer-west { background: url(../imgs/resizable-e2.png) no-repeat center; }
+
+/* masks are usually transparent - make them visible (must 'override' default) */
+.ui-layout-mask {
+	background:	#C00 !important;
+	opacity:	.20 !important;
+	filter:		alpha(opacity=20) !important;
+}
+
+/* north-pane is not resizable*/
+.ui-layout-resizer-north-dragging ,
+.ui-layout-resizer-north:hover		{ background: url(../imgs/resizable-n.png) no-repeat center; }
+.ui-layout-resizer-south-dragging ,
+.ui-layout-resizer-south:hover		{ background: url(../imgs/resizable-s.png) no-repeat center; }
+	
+.ui-layout-resizer-west-dragging ,
+.ui-layout-resizer-west-open:hover	{ background: url(../imgs/resizable-w.png) no-repeat center; }
+.ui-layout-resizer-east-dragging ,
+.ui-layout-resizer-east-open:hover	{ background: url(../imgs/resizable-e.png) no-repeat center; }
+
+/* IE6 * HACK - always show resizer graphics because IE6 cannot understand elem:hover */
+/** html .ui-layout-resizer-north		{ background: url(../lib/img/resizable-n.gif) repeat-x center !important; } */
+* html .ui-layout-resizer-south		{ background: url(../imgs/resizable-s.png) no-repeat center  !important; }
+* html .ui-layout-resizer-west-open	{ background: url(../imgs/resizable-w.png) no-repeat center  !important; }
+* html .ui-layout-resizer-east-open	{ background: url(../imgs/resizable-e.png) no-repeat center  !important; }
+
+/*
+*	SIMPLE TOGGLER BUTTONS
+*/
+
+.ui-layout-toggler-north-open ,
+.ui-layout-toggler-south-closed { background: url(../imgs/toggle-up.png) no-repeat center bottom; }
+.ui-layout-toggler-north-closed ,
+.ui-layout-toggler-south-open   { background: url(../imgs/toggle-dn.png) no-repeat center top; }
+.ui-layout-toggler-east-closed ,
+.ui-layout-toggler-west-open    { background: url(../imgs/toggle-lt.png) no-repeat center right; }
+.ui-layout-toggler-west-closed , 
+.ui-layout-toggler-east-open    { background: url(../imgs/toggle-rt.png) no-repeat center left; }
+

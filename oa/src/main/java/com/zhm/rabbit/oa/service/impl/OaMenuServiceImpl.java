@@ -20,5 +20,10 @@ public class OaMenuServiceImpl implements OaMenuService {
 		// TODO Auto-generated method stub
 		return Lists.newArrayList(dao.findAll());
 	}
+	public List<OaMenu> findByType(int type)
+	{
+		// TODO Auto-generated method stub
+		return dao.findByType(type);
+	}
 
 }

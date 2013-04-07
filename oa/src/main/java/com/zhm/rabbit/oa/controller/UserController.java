@@ -1,7 +1,5 @@
 package com.zhm.rabbit.oa.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -9,8 +7,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.google.common.collect.Lists;
-import com.zhm.rabbit.oa.model.LigerGridBean;
+import com.zhm.rabbit.oa.model.GridResultBean;
 import com.zhm.rabbit.oa.repositories.UserInfo;
 import com.zhm.rabbit.oa.service.UserService;
 import com.zhm.rabbit.oa.utils.Md5Util;
@@ -25,14 +22,15 @@ public class UserController {
 		return "/admin/user/listAll";
 	}
 	@RequestMapping(value="/userManager/listAll/getJson")
-	public @ResponseBody LigerGridBean listAllJson(String sortname,String sortorder,int page,int pagesize)
+	public @ResponseBody GridResultBean listAllJson(String sidx,String sord,int page,int rows)
 	{
 		
-		Page<UserInfo> pgObj = userService.findByPage(page-1,pagesize,sortname,sortorder);
-		List<UserInfo> users = Lists.newArrayList(pgObj.iterator());
-		LigerGridBean result = new LigerGridBean();
-		result.setRows(users);
-		result.setTotal(pgObj.getTotalElements());
+		Page<UserInfo> users = userService.findByCond(page,rows,sidx,sord);
+		GridResultBean result = new GridResultBean();
+		result.setPage(page);
+		result.setRecords(users.getNumberOfElements());
+		result.setTotal(users.getTotalPages());
+		result.setRows(users.getContent());
 		return result;
 	}
 	@RequestMapping(value="/userManager/preAdd")
@@ -62,12 +60,28 @@ public class UserController {
 		boolean isExists = userService.findUserExistsByMobile(mobile);
 		return String.valueOf(isExists);
 	}
-	@RequestMapping(value="/userManager/add")
-	public String addUser(UserInfo user)
+	@RequestMapping(value="/userManager/editData")
+	public @ResponseBody String  editData(UserInfo user,String oper,String id)
 	{
-		user.setRole("1");
-		user.setPassword(Md5Util.stringByMD5("123456"));
-		userService.save(user);
-		return "redirect:/userManager/listAll";
+		if(oper.equals("add"))
+		{
+			user.setId(null);
+			user.setRole("1");
+			user.setPassword(Md5Util.stringByMD5("123456"));
+			userService.save(user);
+		}
+		else if(oper.equals("edit"))
+		{
+			UserInfo dbUser = userService.findById(id);
+			dbUser.setEmail(user.getEmail());
+			dbUser.setMobile(user.getMobile());
+			dbUser.setDeptid(user.getDeptid());
+			userService.update(user);
+		}
+		else if(oper.equals("del"))
+		{
+			userService.delete(id);
+		}
+		return "";
 	}
 }

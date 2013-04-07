@@ -45,5 +45,28 @@ public class UserServiceImpl implements UserService {
 		// TODO Auto-generated method stub
 		dao.save(user);
 	}
+
+	public Page<UserInfo> findByCond(int page, int rows, String sidx, String sord)
+	{
+		// TODO Auto-generated method stub
+		sidx=sidx==null?"asc":sidx;
+		PageRequest pr = new PageRequest(page-1, rows, "asc".equals(sord)?Sort.Direction.ASC:Sort.Direction.DESC,sidx==null?"id":sidx);
+		return dao.findAll(pr);
+	}
+
+	public UserInfo findById(String id) {
+		// TODO Auto-generated method stub
+		return dao.findOne(Integer.parseInt(id));
+	}
+
+	public void update(UserInfo user) {
+		// TODO Auto-generated method stub
+		dao.save(user);
+	}
+
+	public void delete(String id) {
+		// TODO Auto-generated method stub
+		dao.delete(Integer.parseInt(id));
+	}
 	
 }

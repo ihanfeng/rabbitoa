@@ -6,7 +6,7 @@ public class GridResultBean {
 	private Integer page;
 	private Integer total;
 	private Integer records;
-	private List<GridBean> rows;
+	private List rows;
 	public Integer getPage() {
 		return page;
 	}
@@ -25,10 +25,10 @@ public class GridResultBean {
 	public void setRecords(Integer records) {
 		this.records = records;
 	}
-	public List<GridBean> getRows() {
+	public List getRows() {
 		return rows;
 	}
-	public void setRows(List<GridBean> rows) {
+	public void setRows(List rows) {
 		this.rows = rows;
 	}
 	

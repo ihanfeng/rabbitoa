@@ -19,4 +19,12 @@ public interface UserService {
 
 	void save(UserInfo user);
 
+	Page<UserInfo> findByCond(int page, int rows, String sidx, String sord);
+
+	UserInfo findById(String id);
+
+	void update(UserInfo user);
+
+	void delete(String id);
+
 }

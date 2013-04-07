@@ -29,21 +29,23 @@ public class OaMenu implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
-	private int id;
+	private Integer id;
 	
 	private String url;
 	
 	private String name;
 	
-	private int type;//1:显示系统权限菜单 2:只有在权限设置的时候才显示
+	private int type;//1:显示系统管理菜单 2:功能列表菜单 0:只有在权限设置的时候才显示
 	
 	private int pid;
 
-	public int getId() {
+	private String targettype;
+	
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -77,6 +79,16 @@ public class OaMenu implements Serializable{
 
 	public void setPid(int pid) {
 		this.pid = pid;
+	}
+
+	public String getTargettype()
+	{
+		return targettype;
+	}
+
+	public void setTargettype(String targettype)
+	{
+		this.targettype = targettype;
 	}
 	
 }
