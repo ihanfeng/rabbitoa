@@ -29,7 +29,7 @@ body {
 	}
 	.ui-layout-content {
 		padding:	10px;
-		padding-right:10px;
+		padding-right:0px;
 		position:	relative; /* contain floated or positioned elements */
 		overflow:	auto; /* add scrolling to content-div */
 	}

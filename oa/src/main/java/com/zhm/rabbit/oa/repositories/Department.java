@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -36,6 +37,18 @@ public class Department implements Serializable{
 	private int pid;
 	
 	private int ordernum;
+	
+	@Transient
+	private int level;
+	
+	@Transient
+	private boolean isLeaf;
+	
+	@Transient
+	private boolean expanded;
+	
+	@Transient
+	private String parent;
 
 	public Integer getId() {
 		return id;
@@ -67,6 +80,38 @@ public class Department implements Serializable{
 
 	public void setOrdernum(int ordernum) {
 		this.ordernum = ordernum;
+	}
+
+	public int getLevel() {
+		return level;
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
+	}
+
+	public boolean isLeaf() {
+		return isLeaf;
+	}
+
+	public void setLeaf(boolean isLeaf) {
+		this.isLeaf = isLeaf;
+	}
+
+	public boolean isExpanded() {
+		return expanded;
+	}
+
+	public void setExpanded(boolean expanded) {
+		this.expanded = expanded;
+	}
+
+	public String getParent() {
+		return parent;
+	}
+
+	public void setParent(String parent) {
+		this.parent = parent;
 	}
 	
 	

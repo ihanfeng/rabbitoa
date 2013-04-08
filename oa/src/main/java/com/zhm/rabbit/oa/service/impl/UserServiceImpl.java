@@ -2,6 +2,10 @@ package com.zhm.rabbit.oa.service.impl;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Query;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,6 +20,8 @@ import com.zhm.rabbit.oa.service.UserService;
 public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserRepository dao;
+	@Autowired
+	private EntityManagerFactory emf;
 
 	public List<UserInfo> findAll() {
 		// TODO Auto-generated method stub
@@ -67,6 +73,24 @@ public class UserServiceImpl implements UserService {
 	public void delete(String id) {
 		// TODO Auto-generated method stub
 		dao.delete(Integer.parseInt(id));
+	}
+
+	public int findNumsByCond(String cond) {
+		// TODO Auto-generated method stub
+		EntityManager em = emf.createEntityManager();
+		String sql = "select count(id) from user_info where 1=1 "+ cond;
+		return em.createNativeQuery(sql).getFirstResult();
+	}
+
+	public List<UserInfo> findByCond(int page, int rows, String sidx,
+			String sord, String cond) {
+		// TODO Auto-generated method stub
+		EntityManager em = emf.createEntityManager();
+		String sql = "select * from user_info where 1=1 "+ cond+" order by "+sidx+" "+sord +" limit ?,?";
+		Query q = em.createNativeQuery(sql, UserInfo.class);
+		q.setParameter(1, (page-1)*rows);
+		q.setParameter(2, rows);
+		return q.getResultList();
 	}
 	
 }

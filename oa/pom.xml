@@ -438,6 +438,10 @@
                             <resourceBase>D:/files</resourceBase>  
                             <contextPath>/files</contextPath>  
                         </contextHandler>  
+                        <contextHandler implementation="org.mortbay.jetty.webapp.WebAppContext">  
+                             <war>../../cas-master/cas-server-webapp/target/cas-server.war</war>
+                            <contextPath>/cas-server</contextPath>  
+                        </contextHandler>  
                     </contextHandlers>  
 				</configuration>
 			</plugin>

@@ -58,11 +58,11 @@ public class SearchUtils
 			}
 			else if("ew".equals(op))
 			{
-				where.append(" like '"+tmp.getData()+"%'");
+				where.append(" like '%"+tmp.getData()+"'");
 			}
 			else if("en".equals(op))
 			{
-				where.append(" not like '"+tmp.getData()+"%'");
+				where.append(" not like '%"+tmp.getData()+"'");
 			}
 			else if("cn".equals(op))
 			{

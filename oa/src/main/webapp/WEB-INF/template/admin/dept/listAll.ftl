@@ -2,25 +2,20 @@
 <script type="text/javascript">
       $(function(){
 			jQuery("#infoContent").jqGrid({
-				url:"${cpath}/userManager/listAll/getJson",
+				treeGrid: true,  
+			    treeGridModel: 'adjacency', //treeGrid模式，跟json元数据有关  
+			    ExpandColumn : 'name',   
+				url:"${cpath}/deptManager/listAll/getJson",
 				datatype: "json",
 				height:$(window).height()-85,
 				width:$(window).width()-5,
-			    colNames:['序号','姓名','电话','邮箱','部门'],
+			    colNames:['序号','部门'],
 			   	colModel:[
-	   				{name:'id',index:'id',sortable:true,editable: false},
-	   				{name:'username',index:'username',sortable:true,editable: true,editrules:{minValue:2,maxvalue:5}},
-	   				{name:'mobile',index:'mobile',sortable:true,editable: true},
-	   				{name:'email',index:'email',sortable:true,editable: true,editrules:{email:true}},
-	   				{name:'deptid',index:'deptid',sortable:true,editable: true}
+	   				{name:'id',index:'id',sortable:false,editable: false},
+	   				{name:'name',index:'name',sortable:false,editable: true,editrules:{minValue:2,maxvalue:5}}
 			   	],
-			   rowNum:20,
-			   rowList:[10,20,30],
-			   pager: '#pInfoContent',
-			   sortname: 'id',
-			   viewrecords: true,
-			   sortorder: "asc",
-			   editurl:"${cpath}/userManager/editData",
+			   pager: "false",    
+			   editurl:"${cpath}/deptManager/editData",
 			   jsonReader : {
 			        root: "rows",
 			        page: "page",
@@ -29,7 +24,15 @@
 			        repeatitems: false,
 			        cell: "cell",
 			        id: "id"
-		    	}
+		    	},
+		    	treeReader : {  
+			      level_field: "level",  
+			      parent_id_field: "parent",   
+			      leaf_field: "leaf",  
+			      expanded_field: "expanded"  
+			    }, 
+			    rowNum : "-1" 
+		    	
 			});
 			var grid = jQuery("#infoContent");
 			var addOptions={
