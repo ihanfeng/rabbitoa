@@ -1,5 +1,6 @@
 package com.zhm.rabbit.oa.service.impl;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Lists;
+import com.zhm.rabbit.oa.repositories.Department;
 import com.zhm.rabbit.oa.repositories.UserInfo;
 import com.zhm.rabbit.oa.repositories.dao.UserRepository;
 import com.zhm.rabbit.oa.service.UserService;
@@ -85,7 +87,7 @@ public class UserServiceImpl implements UserService {
 			em = emf.createEntityManager();
 			String sql = "select count(id) from user_info where 1=1 "+ cond;
 			Query q = em.createNativeQuery(sql);
-			result = q.getFirstResult();
+			result = (Integer)q.getSingleResult();
 		}
 		catch (Exception e)
 		{
@@ -115,6 +117,13 @@ public class UserServiceImpl implements UserService {
 			q.setParameter(1, (page-1)*rows);
 			q.setParameter(2, rows);
 			results = q.getResultList();
+			String deptSql = "select * from department where id=?";
+			for(UserInfo tmp:results)
+			{
+				Query deptq = em.createNativeQuery(deptSql, Department.class);
+				deptq.setParameter(1, tmp.getDeptid());
+				tmp.setDeptid(((Department)deptq.getSingleResult()).getName());
+			}
 		}
 		catch (Exception e)
 		{
@@ -142,7 +151,7 @@ public class UserServiceImpl implements UserService {
 			String sql = "select count(id) from user_info where deptid in (select id from department where FIND_IN_SET(id, getDeptsChildLst(?))) "+ cond;
 			Query q = em.createNativeQuery(sql);
 			q.setParameter(1,deptid);
-			result = q.getFirstResult();
+			result = ((BigInteger)q.getSingleResult()).intValue();
 		}
 		catch (Exception e)
 		{
@@ -174,6 +183,13 @@ public class UserServiceImpl implements UserService {
 			q.setParameter(2, (page-1)*rows);
 			q.setParameter(3, rows);
 			results = q.getResultList();
+			String deptSql = "select * from department where id=?";
+			for(UserInfo tmp:results)
+			{
+				Query deptq = em.createNativeQuery(deptSql, Department.class);
+				deptq.setParameter(1, tmp.getDeptid());
+				tmp.setDeptid(((Department)deptq.getSingleResult()).getName());
+			}
 		}
 		catch (Exception e)
 		{

@@ -80,8 +80,21 @@
 	        	'title':'查看人员', 
 	        	'id' :'deptDetailBtn'
 	        };
+	        var mgParameters={
+	        	'caption':'编辑部门',
+	        	'buttonicon':'none',
+	        	'onClickButton':showDeptManagerPanel,
+	        	'title':'编辑部门', 
+	        	'id' :'deptManagerBtn'
+	        };
+	        var separator_parameters={
+	        	sepclass : "ui-separator",sepcontent: ''
+	        }
 			grid.jqGrid('navGrid',"#pInfoContent",{'add':false,'edit':false,'del':false,'search':false},addOptions,editOptions,{},{multipleSearch:true});
+			grid.jqGrid("navSeparatorAdd","#pInfoContent",separator_parameters);
 			grid.jqGrid('navButtonAdd',"#pInfoContent",parameters);
+			grid.jqGrid("navSeparatorAdd","#pInfoContent",separator_parameters);
+			grid.jqGrid('navButtonAdd',"#pInfoContent",mgParameters);
 			re_pos();
 			
       });
@@ -91,7 +104,7 @@
       	if(gr)
 		{
 			var rowData = jQuery('#infoContent').jqGrid('getRowData',gr);
-			$("#user-dialog").attr("title",rowData.name+"--人员列表");
+			$("#user-dialog").attr("title",rowData.name+"--人员列表    (双击行数据可编辑部门人员)");
 			$("#user-dialog").dialog({
 				bgiframe: true,
 				autoOpen: false,
@@ -124,6 +137,36 @@
 			alert('请选择一行再进行操作！');
 		}
       }
+      function showDeptManagerPanel()
+      {
+      		$("#user-dialog").attr("title","编辑部门");
+			$("#user-dialog").dialog({
+				bgiframe: true,
+				autoOpen: false,
+				resizable: false,
+				width:$(window).width()-80,	height:$(window).height()-50,
+				modal: true,
+				overlay: {	backgroundColor: '#000', opacity: 0.5	},
+				close: function() {	 
+						// Remove the dialog elements
+                		// Note: this will put the original div element in the dom
+						$(this).dialog("destroy");
+               			// Remove the left over element (the original div element)
+						//$(this).remove(); 
+				}
+				//open:  function() {	 ... },
+				/*
+				,
+				buttons: {
+					'确定': function() {$(this).dialog('close'); },
+					'取消': function() { 
+						$(this).dialog('close');
+					}
+				}
+				*/
+			});
+			$("#user-dialog").html($("<iframe />").attr("src", "${cpath}/deptManager/editDeptTree").attr("width","99%").attr("height","100%").attr("frameBorder","0")).dialog('open');
+      }
 		function re_pos()
 		{
 			if($('#infoContent')[0])
@@ -150,7 +193,7 @@
 <body>
 	<div class="ui-layout-center">
 		<h3 class="ui-widget-header">
-			用户列表
+			部门列表&nbsp;&nbsp;(双击行数据可查看部门人员)
 		</h3>
 		<div class="ui-layout-content ui-widget-content">
 			<table id="infoContent">

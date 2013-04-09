@@ -43,7 +43,10 @@
 			        repeatitems: false,
 			        cell: "cell",
 			        id: "id"
-		    	}
+		    	},
+		    	ondblClickRow: function(rowid) {
+				    jQuery(this).jqGrid('editGridRow', rowid);
+				}
 			});
 			var grid = jQuery("#infoContent");
 			var addOptions={

@@ -38,7 +38,7 @@ public class UserInfo implements Serializable {
 
 	private String role;
 
-	private int deptid;
+	private String deptid;
 
 	@Column(unique = true)
 	private String mobile;
@@ -81,11 +81,13 @@ public class UserInfo implements Serializable {
 		this.role = role;
 	}
 
-	public int getDeptid() {
+	
+
+	public String getDeptid() {
 		return deptid;
 	}
 
-	public void setDeptid(int deptid) {
+	public void setDeptid(String deptid) {
 		this.deptid = deptid;
 	}
 

@@ -2,6 +2,7 @@ package com.zhm.rabbit.oa.service.impl;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -9,6 +10,7 @@ import javax.persistence.Query;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -72,7 +74,7 @@ public class DeptServiceImpl implements DeptService {
 		{
 			where = " where pid="+pid;
 		}
-		String sql = "select * from department"+where;
+		String sql = "select * from department"+where+" order by ordernum";
 		List<Department> depts = null;
 		EntityManager em = null;
 		try
@@ -125,6 +127,53 @@ public class DeptServiceImpl implements DeptService {
 		// TODO Auto-generated method stub
 		return dao.findByPid(pid);
 	}
-	
-	
+
+	public int findMaxOrderNumByPid(String pId) {
+		// TODO Auto-generated method stub
+		int result=0;
+		EntityManager em=null;
+		try
+		{
+			
+			em = emf.createEntityManager();
+			String sql = "select max(ordernum) from department where pid=?";
+			Query q = em.createNativeQuery(sql);
+			q.setParameter(1,pId);
+			result = (Integer)q.getSingleResult();
+		}
+		catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally
+		{
+			if(em!=null)
+			{
+				em.close();
+			}
+		}
+		return result;
+	}
+
+	public void save(Department dept) {
+		// TODO Auto-generated method stub
+		dao.save(dept);
+	}
+
+	public Department findById(Integer infoid) {
+		// TODO Auto-generated method stub
+		return dao.findOne(infoid);
+	}
+	@Transactional(rollbackFor=Exception.class)
+	public void orderDepts(int currId, int changeId) {
+		// TODO Auto-generated method stub
+		Department dept1 = dao.findOne(currId);
+		Department dept2 = dao.findOne(changeId);
+		int tmpOrderNum = dept1.getOrdernum();
+		dept1.setOrdernum(dept2.getOrdernum());
+		dept2.setOrdernum(tmpOrderNum);
+		dao.save(dept1);
+		dao.save(dept2);
+	}
 }

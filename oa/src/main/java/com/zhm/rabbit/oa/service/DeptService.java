@@ -10,4 +10,12 @@ public interface DeptService {
 
 	List<Department> findByPid(String pid);
 
+	int findMaxOrderNumByPid(String pId);
+
+	void save(Department dept);
+
+	Department findById(Integer infoid);
+
+	void orderDepts(int currId, int changeId);
+
 }

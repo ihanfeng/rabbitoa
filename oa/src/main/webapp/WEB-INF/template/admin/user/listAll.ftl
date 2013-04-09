@@ -43,7 +43,10 @@
 			        repeatitems: false,
 			        cell: "cell",
 			        id: "id"
-		    	}
+		    	},
+		    	ondblClickRow: function(rowid) {
+				    jQuery(this).jqGrid('editGridRow', rowid);
+				}
 			});
 			var grid = jQuery("#infoContent");
 			var addOptions={
@@ -108,7 +111,7 @@
 <body>
 	<div class="ui-layout-center">
 		<h3 class="ui-widget-header">
-			用户列表
+			用户列表&nbsp;&nbsp;(双击行数据可编辑人员)
 		</h3>
 		<div class="ui-layout-content ui-widget-content">
 			<table id="infoContent">
