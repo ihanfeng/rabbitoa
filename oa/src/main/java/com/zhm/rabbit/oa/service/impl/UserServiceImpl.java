@@ -77,20 +77,116 @@ public class UserServiceImpl implements UserService {
 
 	public int findNumsByCond(String cond) {
 		// TODO Auto-generated method stub
-		EntityManager em = emf.createEntityManager();
-		String sql = "select count(id) from user_info where 1=1 "+ cond;
-		return em.createNativeQuery(sql).getFirstResult();
+		int result=0;
+		EntityManager em=null;
+		try
+		{
+			
+			em = emf.createEntityManager();
+			String sql = "select count(id) from user_info where 1=1 "+ cond;
+			Query q = em.createNativeQuery(sql);
+			result = q.getFirstResult();
+		}
+		catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally
+		{
+			if(em!=null)
+			{
+				em.close();
+			}
+		}
+		return result;
 	}
 
 	public List<UserInfo> findByCond(int page, int rows, String sidx,
 			String sord, String cond) {
 		// TODO Auto-generated method stub
-		EntityManager em = emf.createEntityManager();
-		String sql = "select * from user_info where 1=1 "+ cond+" order by "+sidx+" "+sord +" limit ?,?";
-		Query q = em.createNativeQuery(sql, UserInfo.class);
-		q.setParameter(1, (page-1)*rows);
-		q.setParameter(2, rows);
-		return q.getResultList();
+		List<UserInfo> results=null;
+		EntityManager em=null;
+		try
+		{
+			em = emf.createEntityManager();
+			String sql = "select * from user_info where 1=1 "+ cond+" order by "+sidx+" "+sord +" limit ?,?";
+			Query q = em.createNativeQuery(sql, UserInfo.class);
+			q.setParameter(1, (page-1)*rows);
+			q.setParameter(2, rows);
+			results = q.getResultList();
+		}
+		catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally{
+			if(em!=null)
+			{
+				em.close();
+			}
+		}
+		return results;
+	}
+
+	public int findNumsByDeptidCond(String cond, int deptid)
+	{
+		// TODO Auto-generated method stub
+		int result=0;
+		EntityManager em=null;
+		try
+		{
+			
+			em = emf.createEntityManager();
+			String sql = "select count(id) from user_info where deptid in (select id from department where FIND_IN_SET(id, getDeptsChildLst(?))) "+ cond;
+			Query q = em.createNativeQuery(sql);
+			q.setParameter(1,deptid);
+			result = q.getFirstResult();
+		}
+		catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally
+		{
+			if(em!=null)
+			{
+				em.close();
+			}
+		}
+		return result;
+	}
+
+	public List<UserInfo> findByDeptidCond(int page, int rows, String sidx,
+			String sord, String cond, int deptid)
+	{
+		// TODO Auto-generated method stub
+		List<UserInfo> results=null;
+		EntityManager em=null;
+		try
+		{
+			em = emf.createEntityManager();
+			String sql = "select * from user_info where deptid in (select id from department where FIND_IN_SET(id, getDeptsChildLst(?))) "+ cond+" order by "+sidx+" "+sord +" limit ?,?";
+			Query q = em.createNativeQuery(sql, UserInfo.class);
+			q.setParameter(1, deptid);
+			q.setParameter(2, (page-1)*rows);
+			q.setParameter(3, rows);
+			results = q.getResultList();
+		}
+		catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally{
+			if(em!=null)
+			{
+				em.close();
+			}
+		}
+		return results;
 	}
 	
 }

@@ -9,13 +9,18 @@
 				datatype: "json",
 				height:$(window).height()-85,
 				width:$(window).width()-5,
-			    colNames:['序号','部门'],
+			    colNames:['部门','序号'],
 			   	colModel:[
-	   				{name:'id',index:'id',sortable:false,editable: false},
-	   				{name:'name',index:'name',sortable:false,editable: true,editrules:{minValue:2,maxvalue:5}}
+			   		{name:'name',index:'name',sortable:false},
+	   				{name:'id',index:'id',sortable:false}
 			   	],
-			   pager: "false",    
-			   editurl:"${cpath}/deptManager/editData",
+			   pager: "#pInfoContent", 
+			   viewrecords: true,   
+			   multiselect: false,
+			   ondblClickRow:function(rowid, iRow, iCol, e)
+			   {
+			   	  showDeptUser();
+			   },
 			   jsonReader : {
 			        root: "rows",
 			        page: "page",
@@ -27,9 +32,9 @@
 		    	},
 		    	treeReader : {  
 			      level_field: "level",  
-			      parent_id_field: "parent",   
+			      parent_id_field: "pid",   
 			      leaf_field: "leaf",  
-			      expanded_field: "expanded"  
+			      expanded_field: "expanded" 
 			    }, 
 			    rowNum : "-1" 
 		    	
@@ -68,9 +73,57 @@
 	                 dlgDiv[0].style.left = Math.round((parentWidth-dlgWidth)/2) + "px";
 	             }
 	          }
-			grid.jqGrid('navGrid',"#pInfoContent",{},addOptions,editOptions,{},{multipleSearch:true});
+	        var parameters={
+	        	'caption':'查看人员',
+	        	'buttonicon':'none',
+	        	'onClickButton':showDeptUser,
+	        	'title':'查看人员', 
+	        	'id' :'deptDetailBtn'
+	        };
+			grid.jqGrid('navGrid',"#pInfoContent",{'add':false,'edit':false,'del':false,'search':false},addOptions,editOptions,{},{multipleSearch:true});
+			grid.jqGrid('navButtonAdd',"#pInfoContent",parameters);
 			re_pos();
+			
       });
+      function showDeptUser()
+      {
+      	var gr = jQuery("#infoContent").jqGrid('getGridParam','selrow');
+      	if(gr)
+		{
+			var rowData = jQuery('#infoContent').jqGrid('getRowData',gr);
+			$("#user-dialog").attr("title",rowData.name+"--人员列表");
+			$("#user-dialog").dialog({
+				bgiframe: true,
+				autoOpen: false,
+				resizable: false,
+				width:$(window).width()-80,	height:$(window).height()-50,
+				modal: true,
+				overlay: {	backgroundColor: '#000', opacity: 0.5	},
+				close: function() {	 
+						// Remove the dialog elements
+                		// Note: this will put the original div element in the dom
+						$(this).dialog("destroy");
+               			// Remove the left over element (the original div element)
+						//$(this).remove(); 
+				}
+				//open:  function() {	 ... },
+				/*
+				,
+				buttons: {
+					'确定': function() {$(this).dialog('close'); },
+					'取消': function() { 
+						$(this).dialog('close');
+					}
+				}
+				*/
+			});
+			$("#user-dialog").html($("<iframe />").attr("src", "${cpath}/userManager/listByDeptid?deptid="+gr).attr("width","99%").attr("height","100%").attr("frameBorder","0")).dialog('open');
+		}
+		else
+		{
+			alert('请选择一行再进行操作！');
+		}
+      }
 		function re_pos()
 		{
 			if($('#infoContent')[0])
@@ -103,6 +156,9 @@
 			<table id="infoContent">
     	 	</table>
     	 	<div id="pInfoContent"></div>
+		</div>
+		<div id="user-dialog" style="display:none">
+			
 		</div>
 	</div>
 </body>

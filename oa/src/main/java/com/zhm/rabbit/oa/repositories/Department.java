@@ -34,7 +34,7 @@ public class Department implements Serializable{
 	
 	private String name;
 	
-	private int pid;
+	private String pid;
 	
 	private int ordernum;
 	
@@ -47,9 +47,6 @@ public class Department implements Serializable{
 	@Transient
 	private boolean expanded;
 	
-	@Transient
-	private String parent;
-
 	public Integer getId() {
 		return id;
 	}
@@ -66,11 +63,14 @@ public class Department implements Serializable{
 		this.name = name;
 	}
 
-	public int getPid() {
+	
+	public String getPid()
+	{
 		return pid;
 	}
 
-	public void setPid(int pid) {
+	public void setPid(String pid)
+	{
 		this.pid = pid;
 	}
 
@@ -106,13 +106,7 @@ public class Department implements Serializable{
 		this.expanded = expanded;
 	}
 
-	public String getParent() {
-		return parent;
-	}
 
-	public void setParent(String parent) {
-		this.parent = parent;
-	}
 	
 	
 }

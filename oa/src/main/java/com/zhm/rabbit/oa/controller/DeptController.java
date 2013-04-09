@@ -24,28 +24,6 @@ public class DeptController {
 	public @ResponseBody GridResultBean listJson(String sidx,String sord,int page,int rows)
 	{
 		List<Department> depts = deptService.findAll();
-		for(Department tmp:depts)
-		{
-			List<Department> existsDepts = deptService.findByPid(tmp.getId());
-			if(existsDepts!=null&&existsDepts.size()>0)
-			{
-				tmp.setLeaf(false);
-				tmp.setExpanded(false);
-			}
-			else
-			{
-				tmp.setLeaf(true);
-				tmp.setExpanded(false);
-			}
-			if(tmp.getLevel()==0)
-			{
-				tmp.setParent("null");
-			}
-			else
-			{
-				tmp.setParent(tmp.getPid()+"");
-			}
-		}
 		GridResultBean result = new GridResultBean();
 		result.setPage(1);
 		result.setRecords(depts.size());

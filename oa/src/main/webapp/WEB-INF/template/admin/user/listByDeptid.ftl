@@ -2,10 +2,10 @@
 <script type="text/javascript">
       $(function(){
 			jQuery("#infoContent").jqGrid({
-				url:"${cpath}/userManager/listAll/getJson",
+				url:"${cpath}/userManager/listByDeptid/getJson?deptid=${deptid}",
 				datatype: "json",
-				height:$(window).height()-85,
-				width:$(window).width()-5,
+				height:$(window).height(),
+				width:$(window).width(),
 			    colNames:['序号','姓名','电话','邮箱','部门'],
 			   	colModel:[
 	   				{name:'id',index:'id',sortable:true,editable: false},
@@ -107,9 +107,6 @@
 </head>
 <body>
 	<div class="ui-layout-center">
-		<h3 class="ui-widget-header">
-			用户列表
-		</h3>
 		<div class="ui-layout-content ui-widget-content">
 			<table id="infoContent">
     	 	</table>

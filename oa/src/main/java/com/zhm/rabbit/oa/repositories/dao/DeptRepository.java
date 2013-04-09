@@ -8,6 +8,6 @@ import com.zhm.rabbit.oa.repositories.Department;
 
 public interface DeptRepository extends PagingAndSortingRepository<Department, Integer> {
 
-	List<Department> findByPid(int pid);
+	List<Department> findByPid(String pid);
 
 }

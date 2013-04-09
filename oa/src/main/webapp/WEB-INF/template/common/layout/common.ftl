@@ -15,6 +15,7 @@
 	<link rel="stylesheet" type="text/css" media="screen" href="${cpath}/css/main.css" />
 	<script type="text/javascript" src="${cpath}/jquery/jquery-1.8.0.js"></script>
 	<script type="text/javascript" src="${cpath}/jquery_ui/js/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="${cpath}/jquery_ui/i18n/jquery.ui.datepicker-zh-CN.min.js"></script>
 	<script type="text/javascript" src="${cpath}/jquery_ui_layout/jquery.layout-latest.js"></script>
 	<script src="${cpath}/jqgrid/js/i18n/grid.locale-cn.js" type="text/javascript"></script>
 	<script src="${cpath}/jqgrid/js/jquery.jqGrid.min.js" type="text/javascript"></script>

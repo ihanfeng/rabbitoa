@@ -8,6 +8,6 @@ public interface DeptService {
 
 	List<Department> findAll();
 
-	List<Department> findByPid(int pid);
+	List<Department> findByPid(String pid);
 
 }

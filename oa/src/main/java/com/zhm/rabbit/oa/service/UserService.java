@@ -32,4 +32,9 @@ public interface UserService {
 	List<UserInfo> findByCond(int page, int rows, String sidx, String sord,
 			String cond);
 
+	int findNumsByDeptidCond(String cond, int deptid);
+
+	List<UserInfo> findByDeptidCond(int page, int rows, String sidx,
+			String sord, String cond, int deptid);
+
 }
