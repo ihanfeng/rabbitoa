@@ -2,10 +2,10 @@
 <script type="text/javascript">
       $(function(){
 			jQuery("#infoContent").jqGrid({
-				url:"${cpath}/userManager/listAll/getJson",
+				url:"${cpath}/userManager/listByPositionId/getJson?positionid=${positionid}",
 				datatype: "json",
-				height:$(window).height()-85,
-				width:$(window).width()-5,
+				height:$(window).height(),
+				width:$(window).width(),
 				ajaxSelectOptions: {
 			        data: {
 			            page: '1',
@@ -14,13 +14,13 @@
 			    },
 			    colNames:['序号','姓名','电话','邮箱','部门','职位'],
 			   	colModel:[
-	   				{name:'id',index:'id',sortable:true,editable: false,search:true,searchoptions:{sopt:['eq','ne']}},
-	   				{name:'username',index:'username',sortable:true,editable: true,editrules:{minValue:2,maxvalue:5},search:true},
-	   				{name:'mobile',index:'mobile',sortable:true,editable: true,search:true},
-	   				{name:'email',index:'email',sortable:true,editable: true,editrules:{email:true},search:true},
+	   				{name:'id',index:'id',sortable:true,editable: false,searchoptions:{sopt:['eq','ne']}},
+	   				{name:'username',index:'username',sortable:true,editable: true,editrules:{minValue:2,maxvalue:5}},
+	   				{name:'mobile',index:'mobile',sortable:true,editable: true},
+	   				{name:'email',index:'email',sortable:true,editable: true,editrules:{email:true}},
 	   				{name:'deptid',index:'deptid',stype:'select',sortable:true,search:true,searchoptions:{
 	   					sopt:['eq','ne'],
-	   					dataUrl: '${cpath}/deptManager/listAll/getJson',
+	   					dataUrl: '${cpath}/positionManager/listAll/getJson',
 			            buildSelect: function (data) {
 				            var blankAry=['','&nbsp;&nbsp;&nbsp;&nbsp;','&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;','&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'];
 				            var retValue = $.parseJSON(data);
@@ -36,7 +36,7 @@
 	   				},
 	   				edittype: 'select',editable: true,
 	   				editoptions: {
-			            dataUrl: '${cpath}/deptManager/listAll/getJson',
+			            dataUrl: '${cpath}/positionManager/listAll/getJson',
 			            buildSelect: function (data) {
 			            var blankAry=['','&nbsp;&nbsp;&nbsp;&nbsp;','&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;','&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'];
 			            var retValue = $.parseJSON(data);
@@ -165,9 +165,6 @@
 </head>
 <body>
 	<div class="ui-layout-center">
-		<h3 class="ui-widget-header">
-			用户列表&nbsp;&nbsp;(双击行数据可编辑人员)
-		</h3>
 		<div class="ui-layout-content ui-widget-content">
 			<table id="infoContent">
     	 	</table>

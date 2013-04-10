@@ -174,4 +174,55 @@ public class UserController {
 		return result;
 	}
 	
+	
+	@RequestMapping(value="/userManager/listByPositionId")
+	public String listByPositionId(int positionid,ModelMap model)
+	{
+		model.addAttribute("positionid", positionid);
+		return "/admin/user/listByPositionId";
+	}
+	@RequestMapping(value="/userManager/listByPositionId/getJson")
+	public @ResponseBody GridResultBean listUsersByPositionId(int positionid,String sidx,String sord,int page,int rows,String filters)
+	{
+		SearchBean sb = null;
+		if(filters!=null&&!"".equals(filters))
+		{
+			ObjectMapper objectMapper = new ObjectMapper(); 
+			try
+			{
+				sb = objectMapper.readValue(filters, SearchBean.class);
+			}
+			catch (JsonParseException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			catch (JsonMappingException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			catch (IOException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}  
+		}
+		String cond = "";
+		if(sb!=null)
+		{
+			StringBuffer where = new StringBuffer();
+			cond = SearchUtils.generateSearchCond(sb, where);
+		}
+		int totalNums = userService.findNumsByPositionCond(cond,positionid);
+		Page pg = new Page(page,rows,totalNums,5);
+		List<UserInfo> users = userService.findByPositionCond(page, rows, sidx, sord,cond,positionid);
+		GridResultBean result = new GridResultBean();
+		result.setPage(page);
+		result.setRecords(pg.getTotalRecords());
+		result.setTotal(pg.getTotalPages());
+		result.setRows(users);
+		return result;
+	}
+	
 }

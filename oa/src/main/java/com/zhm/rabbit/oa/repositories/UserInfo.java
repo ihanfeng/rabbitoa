@@ -46,8 +46,8 @@ public class UserInfo implements Serializable {
 	@Column(unique = true)
 	private String email;
 
-	@Transient
-	private String position;//部门职位，不是数据库字段。临时的
+	
+	private String positionid;
 	
 	public Integer getId() {
 		return id;
@@ -107,12 +107,14 @@ public class UserInfo implements Serializable {
 		this.email = email;
 	}
 
-	public String getPosition() {
-		return position;
+	public String getPositionid()
+	{
+		return positionid;
 	}
 
-	public void setPosition(String position) {
-		this.position = position;
+	public void setPositionid(String positionid)
+	{
+		this.positionid = positionid;
 	}
 	
 }

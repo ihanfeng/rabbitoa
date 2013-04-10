@@ -37,4 +37,9 @@ public interface UserService {
 	List<UserInfo> findByDeptidCond(int page, int rows, String sidx,
 			String sord, String cond, int deptid);
 
+	int findNumsByPositionCond(String cond, int positionid);
+
+	List<UserInfo> findByPositionCond(int page, int rows, String sidx,
+			String sord, String cond, int positionid);
+
 }

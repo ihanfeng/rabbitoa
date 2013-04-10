@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Lists;
 import com.zhm.rabbit.oa.repositories.Department;
+import com.zhm.rabbit.oa.repositories.PositionRole;
 import com.zhm.rabbit.oa.repositories.UserInfo;
 import com.zhm.rabbit.oa.repositories.dao.UserRepository;
 import com.zhm.rabbit.oa.service.UserService;
@@ -87,7 +88,7 @@ public class UserServiceImpl implements UserService {
 			em = emf.createEntityManager();
 			String sql = "select count(id) from user_info where 1=1 "+ cond;
 			Query q = em.createNativeQuery(sql);
-			result = (Integer)q.getSingleResult();
+			result = ((BigInteger)q.getSingleResult()).intValue();
 		}
 		catch (Exception e)
 		{
@@ -118,11 +119,15 @@ public class UserServiceImpl implements UserService {
 			q.setParameter(2, rows);
 			results = q.getResultList();
 			String deptSql = "select * from department where id=?";
+			String positionSql = "select * from position_role where id=?";
 			for(UserInfo tmp:results)
 			{
 				Query deptq = em.createNativeQuery(deptSql, Department.class);
 				deptq.setParameter(1, tmp.getDeptid());
 				tmp.setDeptid(((Department)deptq.getSingleResult()).getName());
+				Query positionq = em.createNativeQuery(positionSql, PositionRole.class);
+				positionq.setParameter(1, tmp.getPositionid());
+				tmp.setPositionid(((PositionRole)positionq.getSingleResult()).getName());
 			}
 		}
 		catch (Exception e)
@@ -184,11 +189,85 @@ public class UserServiceImpl implements UserService {
 			q.setParameter(3, rows);
 			results = q.getResultList();
 			String deptSql = "select * from department where id=?";
+			String positionSql = "select * from position_role where id=?";
 			for(UserInfo tmp:results)
 			{
 				Query deptq = em.createNativeQuery(deptSql, Department.class);
 				deptq.setParameter(1, tmp.getDeptid());
 				tmp.setDeptid(((Department)deptq.getSingleResult()).getName());
+				Query positionq = em.createNativeQuery(positionSql, PositionRole.class);
+				positionq.setParameter(1, tmp.getPositionid());
+				tmp.setPositionid(((PositionRole)positionq.getSingleResult()).getName());
+			}
+		}
+		catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally{
+			if(em!=null)
+			{
+				em.close();
+			}
+		}
+		return results;
+	}
+
+	public int findNumsByPositionCond(String cond, int positionid)
+	{
+		// TODO Auto-generated method stub
+		int result=0;
+		EntityManager em=null;
+		try
+		{
+			
+			em = emf.createEntityManager();
+			String sql = "select count(id) from user_info where positionid =? "+ cond;
+			Query q = em.createNativeQuery(sql);
+			q.setParameter(1,positionid);
+			result = ((BigInteger)q.getSingleResult()).intValue();
+		}
+		catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally
+		{
+			if(em!=null)
+			{
+				em.close();
+			}
+		}
+		return result;
+	}
+
+	public List<UserInfo> findByPositionCond(int page, int rows, String sidx,
+			String sord, String cond, int positionid)
+	{
+		// TODO Auto-generated method stub
+		List<UserInfo> results=null;
+		EntityManager em=null;
+		try
+		{
+			em = emf.createEntityManager();
+			String sql = "select * from user_info where positionid = ? "+ cond+" order by "+sidx+" "+sord +" limit ?,?";
+			Query q = em.createNativeQuery(sql, UserInfo.class);
+			q.setParameter(1, positionid);
+			q.setParameter(2, (page-1)*rows);
+			q.setParameter(3, rows);
+			results = q.getResultList();
+			String deptSql = "select * from department where id=?";
+			String positionSql = "select * from position_role where id=?";
+			for(UserInfo tmp:results)
+			{
+				Query deptq = em.createNativeQuery(deptSql, Department.class);
+				deptq.setParameter(1, tmp.getDeptid());
+				tmp.setDeptid(((Department)deptq.getSingleResult()).getName());
+				Query positionq = em.createNativeQuery(positionSql, PositionRole.class);
+				positionq.setParameter(1, tmp.getPositionid());
+				tmp.setPositionid(((PositionRole)positionq.getSingleResult()).getName());
 			}
 		}
 		catch (Exception e)

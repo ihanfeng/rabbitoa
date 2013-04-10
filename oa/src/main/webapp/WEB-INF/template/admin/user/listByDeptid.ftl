@@ -6,14 +6,69 @@
 				datatype: "json",
 				height:$(window).height(),
 				width:$(window).width(),
-			    colNames:['序号','姓名','电话','邮箱','部门'],
+				ajaxSelectOptions: {
+			        data: {
+			            page: '1',
+			            rows:'100'
+			        }
+			    },
+			    colNames:['序号','姓名','电话','邮箱','部门','职位'],
 			   	colModel:[
-	   				{name:'id',index:'id',sortable:true,editable: false},
+	   				{name:'id',index:'id',sortable:true,editable: false,searchoptions:{sopt:['eq','ne']}},
 	   				{name:'username',index:'username',sortable:true,editable: true,editrules:{minValue:2,maxvalue:5}},
 	   				{name:'mobile',index:'mobile',sortable:true,editable: true},
 	   				{name:'email',index:'email',sortable:true,editable: true,editrules:{email:true}},
-	   				{name:'deptid',index:'deptid',edittype: 'select',sortable:true,editable: true,editoptions: {
-			            dataUrl: '${cpath}/deptManager/listAll/getJson?page=1&rows=100',
+	   				{name:'deptid',index:'deptid',stype:'select',sortable:true,search:true,searchoptions:{
+	   					sopt:['eq','ne'],
+	   					dataUrl: '${cpath}/deptManager/listAll/getJson',
+			            buildSelect: function (data) {
+				            var blankAry=['','&nbsp;&nbsp;&nbsp;&nbsp;','&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;','&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'];
+				            var retValue = $.parseJSON(data);
+				            var response = retValue.rows;
+				            var s = '<select id="searchid" name="searchid">';
+				            if (response && response.length) {
+				                for (var i = 0, l = response.length; i < l; i++) {
+				                	s += '<option value="' + response[i]["id"] + '">' + (blankAry[response[i]["level"]])+response[i]["name"] + '</option>';
+				                }
+				            }
+				            return s + "</select>";
+			            }
+	   				},
+	   				edittype: 'select',editable: true,
+	   				editoptions: {
+			            dataUrl: '${cpath}/deptManager/listAll/getJson',
+			            buildSelect: function (data) {
+			            var blankAry=['','&nbsp;&nbsp;&nbsp;&nbsp;','&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;','&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'];
+			            var retValue = $.parseJSON(data);
+			            var response = retValue.rows;
+			            var s = '<select id="myid" name="myid">';
+			            if (response && response.length) {
+			                for (var i = 0, l = response.length; i < l; i++) {
+			                s += '<option value="' + response[i]["id"] + '">' + (blankAry[response[i]["level"]])+response[i]["name"] + '</option>';
+			                }
+			            }
+			            return s + "</select>";
+			            }
+			        }},
+			        {name:'positionid',index:'positionid',stype:'select',sortable:true,search:true,searchoptions:{
+	   					sopt:['eq','ne'],
+	   					dataUrl: '${cpath}/positionManager/listAll/getJson',
+			            buildSelect: function (data) {
+				            var blankAry=['','&nbsp;&nbsp;&nbsp;&nbsp;','&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;','&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'];
+				            var retValue = $.parseJSON(data);
+				            var response = retValue.rows;
+				            var s = '<select id="searchid" name="searchid">';
+				            if (response && response.length) {
+				                for (var i = 0, l = response.length; i < l; i++) {
+				                	s += '<option value="' + response[i]["id"] + '">' + (blankAry[response[i]["level"]])+response[i]["name"] + '</option>';
+				                }
+				            }
+				            return s + "</select>";
+			            }
+	   				},
+	   				edittype: 'select',editable: true,
+	   				editoptions: {
+			            dataUrl: '${cpath}/positionManager/listAll/getJson',
 			            buildSelect: function (data) {
 			            var blankAry=['','&nbsp;&nbsp;&nbsp;&nbsp;','&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;','&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'];
 			            var retValue = $.parseJSON(data);

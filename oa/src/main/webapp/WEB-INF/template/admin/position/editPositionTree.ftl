@@ -7,7 +7,7 @@
 					{
 						$.ajax({
 								type:'POST',
-								url:'${cpath}/deptManager/delMenus.html',
+								url:'${cpath}/positionManager/delMenus.html',
 								data:'infoid='+treeNode.id,
 								error:function(msg)
 								{
@@ -36,7 +36,7 @@
 					{
 						$.ajax({
 							type:'POST',
-							url:'${cpath}/deptManager/modMenus.html',
+							url:'${cpath}/positionManager/modMenus.html',
 							data:'infoid='+treeNode.id+"&name="+encodeURI(newName),
 							error:function(msg)
 							{
@@ -104,7 +104,7 @@
 				zTree.setting.edit.renameTitle = renameTitle;
 			}
 			var treeNodes = [
-				<#list depts as item>
+				<#list proles as item>
 					<#if !item_has_next>
 						{"id":${item.id}, "pId":<#if item.pid!='NULL'>${item.pid}<#else>0</#if>, "name":"${item.name}" <#if item.leaf><#else>,isParent:true</#if>}
 					<#else>
@@ -146,7 +146,7 @@
 					{
 						$.ajax({
 							type:'POST',
-							url:'${cpath}/deptManager/orderTypes',
+							url:'${cpath}/positionManager/orderTypes',
 							data:{'currId':currNode.id,'changeId':preNode.id},
 							error:function(msg)
 							{
@@ -181,7 +181,7 @@
 					{
 						$.ajax({
 							type:'POST',
-							url:'${cpath}/deptManager/orderTypes',
+							url:'${cpath}/positionManager/orderTypes',
 							data:{'currId':currNode.id,'changeId':preNode.id},
 							error:function(msg)
 							{
@@ -210,7 +210,7 @@
 				var currNode = nodes[0];
 				if(currNode)
 				{
-					$("#dept-dialog").attr("title","新增部门");
+					$("#dept-dialog").attr("title","新增职位");
 					$("#dept-dialog").dialog({
 						bgiframe: true,
 						autoOpen: false,
@@ -232,7 +232,7 @@
 								var treeName = $('#name')[0].value;
 								$.ajax({
 									type:"POST",
-									url:'${cpath}/deptManager/addAjaxMenu',
+									url:'${cpath}/positionManager/addAjaxMenu',
 									data:{'pId':currNode.id,'name':treeName},
 									error:function(msg)
 									{
@@ -268,7 +268,7 @@
 				{
 					var currName = currNode.name;
 					var currId = currNode.id;
-					$("#dept-dialog").attr("title","编辑部门");
+					$("#dept-dialog").attr("title","编辑职位");
 					$("#dept-dialog").dialog({
 						bgiframe: true,
 						autoOpen: false,
@@ -290,7 +290,7 @@
 								var treeName = $('#name')[0].value;
 								$.ajax({
 									type:'POST',
-									url:'${cpath}/deptManager/modMenus',
+									url:'${cpath}/positionManager/modMenus',
 									data:'infoid='+currId+"&name="+encodeURI(treeName),
 									error:function(msg)
 									{
@@ -328,7 +328,7 @@
 						{
 							$.ajax({
 									type:'POST',
-									url:'${cpath}/deptManager/delMenus.html',
+									url:'${cpath}/positionManager/delMenus.html',
 									data:'infoid='+currNode.id,
 									error:function(msg)
 									{
