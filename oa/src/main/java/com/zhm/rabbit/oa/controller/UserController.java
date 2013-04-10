@@ -116,6 +116,7 @@ public class UserController {
 			dbUser.setEmail(user.getEmail());
 			dbUser.setMobile(user.getMobile());
 			dbUser.setDeptid(user.getDeptid());
+			dbUser.setPositionid(user.getPositionid());
 			userService.update(dbUser);
 		}
 		else if(oper.equals("del"))

@@ -15,7 +15,17 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import com.zhm.rabbit.oa.repositories.UserInfo;
+import com.zhm.rabbit.oa.service.UserService;
+/**
+ * 
+ * @author zhmlvft
+ * cas登陆成功之后回调的方法，设置用户信息到session中。
+ * 
+ */
 public class CasCallBackFilter implements Filter {
 	
 	public void destroy() {
@@ -43,14 +53,14 @@ public class CasCallBackFilter implements Filter {
 				         .getPrincipals();
 			     if (principalCollection != null) {    
 			    	 List principals = principalCollection.asList();
-			    	 // 这里获取到的list有两个元素，
-			    	 //一个是cas返回来的用户名，举例是aaa，
-			    	 //一个是cas返回的更多属性的map对象，举例是{uid:aaa,username:aaa,email:aaa}
-			    	 //通过principals.get(1)来获得属性集合的map对象
 			    	 String username =  (String)principals.get(0);
-			    	 //根据返回的邮箱/手机号查询用户信息
-		    		String cpath = ((HttpServletRequest)request).getContextPath();
-		    		session.setAttribute("cpath", cpath);
+			    	 ApplicationContext ac1 =
+			    			 WebApplicationContextUtils.getRequiredWebApplicationContext(req.getSession().getServletContext());
+			    	 UserService userService = (UserService)ac1.getBean("userService");
+			    	 UserInfo dbUser = userService.findByUserId(username);
+			    	 session.setAttribute("currUser", dbUser);
+		    		 String cpath = ((HttpServletRequest)request).getContextPath();
+		    		 session.setAttribute("cpath", cpath);
 			     }
 			}
 			chain.doFilter(request, response);

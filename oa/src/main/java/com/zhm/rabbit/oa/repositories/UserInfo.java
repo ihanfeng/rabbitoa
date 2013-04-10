@@ -49,6 +49,12 @@ public class UserInfo implements Serializable {
 	
 	private String positionid;
 	
+	@Transient
+	private Department dept;
+	
+	@Transient
+	private PositionRole position;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -115,6 +121,22 @@ public class UserInfo implements Serializable {
 	public void setPositionid(String positionid)
 	{
 		this.positionid = positionid;
+	}
+
+	public Department getDept() {
+		return dept;
+	}
+
+	public void setDept(Department dept) {
+		this.dept = dept;
+	}
+
+	public PositionRole getPosition() {
+		return position;
+	}
+
+	public void setPosition(PositionRole position) {
+		this.position = position;
 	}
 	
 }

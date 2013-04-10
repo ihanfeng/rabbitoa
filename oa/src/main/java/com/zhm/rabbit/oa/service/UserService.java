@@ -42,4 +42,6 @@ public interface UserService {
 	List<UserInfo> findByPositionCond(int page, int rows, String sidx,
 			String sord, String cond, int positionid);
 
+	UserInfo findByUserId(String username);
+
 }

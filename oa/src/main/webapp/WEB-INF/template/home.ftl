@@ -11,8 +11,6 @@
 	<title>Rabbit OA系统</title>
 
 	<link rel="stylesheet" type="text/css" href="${cpath}/jquery_ui_layout/css/layout-default-latest.css" />
-	<link rel="stylesheet" type="text/css" href="${cpath}/jquery_ui/themes/start/jquery-ui.css" />
-	<link rel="stylesheet" type="text/css" href="${cpath}/jquery_ui/themes/start/jquery.ui.theme.css" />
 	<link rel="stylesheet" type="text/css" media="screen" href="${cpath}/jquery_ztree/css/zTreeStyle/zTreeStyle.css" />
 	<!-- CUSTOMIZE/OVERRIDE THE DEFAULT CSS -->
 	<style type="text/css">
@@ -41,6 +39,10 @@
 		font-weight:	normal;
 		border-width:	1px 0 0;
 	}
+	.jquery-ui-themeswitcher-trigger
+	{
+		height:20px !important;
+	}
 	</style>
 
 	<!-- REQUIRED scripts for layout widget -->
@@ -54,7 +56,10 @@
     <script src="${cpath}/jquery_ztree/js/jquery.ztree.all-3.5.min.js" type="text/javascript"></script> 
 	<script type="text/javascript">
 	$(document).ready( function() {
-
+		$('#rollBackTheme').button().click(function(){
+			removeUITheme();
+			myLayout.resizeAll();
+		});
 		myLayout = $('body').layout({
 			west__size:			300
 		,	west__togglerTip_closed:	"展开"
@@ -165,7 +170,7 @@
 
 <div class="ui-layout-north ui-widget-content ui-state-active" style="display: none;">
 		<div style="float: right; margin-right: 160px;">
-			<button onClick="removeUITheme(); myLayout.resizeAll()">恢复默认样式</button>
+			<button id="rollBackTheme">默认样式</button>
 		</div>
 		<span style="font-size:30px;font-weight:bold">Rabbit OA</span>
 </div>

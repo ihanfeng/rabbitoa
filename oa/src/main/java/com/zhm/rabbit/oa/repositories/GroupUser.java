@@ -14,13 +14,13 @@ import org.hibernate.annotations.DynamicUpdate;
 /**
  * 
  * @author zhmlvft
- * 角色表
+ * 用户组分组表
  */
 @Entity
 @DynamicInsert 
 @DynamicUpdate
-@Table(name="oa_role") 
-public class OaRole implements Serializable{
+@Table(name="oa_group_user") 
+public class GroupUser implements Serializable{
 	/**
 	 * 
 	 */
@@ -31,7 +31,9 @@ public class OaRole implements Serializable{
 	@Column(name = "id")
 	private Integer id;
 	
-	private String name;
+	private String userid;
+	
+	private int groupid;
 
 	public Integer getId() {
 		return id;
@@ -41,13 +43,23 @@ public class OaRole implements Serializable{
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getUserid() {
+		return userid;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setUserid(String userid) {
+		this.userid = userid;
 	}
+
+	public int getGroupid() {
+		return groupid;
+	}
+
+	public void setGroupid(int groupid) {
+		this.groupid = groupid;
+	}
+
+	
 	
 	
 }

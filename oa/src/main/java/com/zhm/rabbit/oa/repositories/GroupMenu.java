@@ -14,26 +14,27 @@ import org.hibernate.annotations.DynamicUpdate;
 /**
  * 
  * @author zhmlvft
- * 用户角色表
+ * 用户组菜单表
  */
 @Entity
 @DynamicInsert 
 @DynamicUpdate
-@Table(name="oa_user_role") 
-public class OaUserRole implements Serializable{
+@Table(name="oa_group_menu") 
+public class GroupMenu implements Serializable{
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
 	private Integer id;
 	
-	private String userid;
+	private Integer groupid;
 	
-	private int roleid;
+	private Integer menuid;
 
 	public Integer getId() {
 		return id;
@@ -43,20 +44,20 @@ public class OaUserRole implements Serializable{
 		this.id = id;
 	}
 
-	public String getUserid() {
-		return userid;
+	public Integer getGroupid() {
+		return groupid;
 	}
 
-	public void setUserid(String userid) {
-		this.userid = userid;
+	public void setGroupid(Integer groupid) {
+		this.groupid = groupid;
 	}
 
-	public int getRoleid() {
-		return roleid;
+	public Integer getMenuid() {
+		return menuid;
 	}
 
-	public void setRoleid(int roleid) {
-		this.roleid = roleid;
+	public void setMenuid(Integer menuid) {
+		this.menuid = menuid;
 	}
 	
 	

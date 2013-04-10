@@ -17,6 +17,8 @@ import com.google.common.collect.Lists;
 import com.zhm.rabbit.oa.repositories.Department;
 import com.zhm.rabbit.oa.repositories.PositionRole;
 import com.zhm.rabbit.oa.repositories.UserInfo;
+import com.zhm.rabbit.oa.repositories.dao.DeptRepository;
+import com.zhm.rabbit.oa.repositories.dao.PositionRepository;
 import com.zhm.rabbit.oa.repositories.dao.UserRepository;
 import com.zhm.rabbit.oa.service.UserService;
 @Service("userService")
@@ -25,6 +27,10 @@ public class UserServiceImpl implements UserService {
 	private UserRepository dao;
 	@Autowired
 	private EntityManagerFactory emf;
+	@Autowired
+	private DeptRepository deptDao;
+	@Autowired
+	private PositionRepository positionDao;
 
 	public List<UserInfo> findAll() {
 		// TODO Auto-generated method stub
@@ -122,12 +128,18 @@ public class UserServiceImpl implements UserService {
 			String positionSql = "select * from position_role where id=?";
 			for(UserInfo tmp:results)
 			{
-				Query deptq = em.createNativeQuery(deptSql, Department.class);
-				deptq.setParameter(1, tmp.getDeptid());
-				tmp.setDeptid(((Department)deptq.getSingleResult()).getName());
-				Query positionq = em.createNativeQuery(positionSql, PositionRole.class);
-				positionq.setParameter(1, tmp.getPositionid());
-				tmp.setPositionid(((PositionRole)positionq.getSingleResult()).getName());
+				if(tmp.getDeptid()!=null)
+				{
+					Query deptq = em.createNativeQuery(deptSql, Department.class);
+					deptq.setParameter(1, tmp.getDeptid());
+					tmp.setDeptid(((Department)deptq.getSingleResult()).getName());
+				}
+				if(tmp.getPositionid()!=null)
+				{
+					Query positionq = em.createNativeQuery(positionSql, PositionRole.class);
+					positionq.setParameter(1, tmp.getPositionid());
+					tmp.setPositionid(((PositionRole)positionq.getSingleResult()).getName());
+				}
 			}
 		}
 		catch (Exception e)
@@ -192,12 +204,18 @@ public class UserServiceImpl implements UserService {
 			String positionSql = "select * from position_role where id=?";
 			for(UserInfo tmp:results)
 			{
-				Query deptq = em.createNativeQuery(deptSql, Department.class);
-				deptq.setParameter(1, tmp.getDeptid());
-				tmp.setDeptid(((Department)deptq.getSingleResult()).getName());
-				Query positionq = em.createNativeQuery(positionSql, PositionRole.class);
-				positionq.setParameter(1, tmp.getPositionid());
-				tmp.setPositionid(((PositionRole)positionq.getSingleResult()).getName());
+				if(tmp.getDeptid()!=null)
+				{
+					Query deptq = em.createNativeQuery(deptSql, Department.class);
+					deptq.setParameter(1, tmp.getDeptid());
+					tmp.setDeptid(((Department)deptq.getSingleResult()).getName());
+				}
+				if(tmp.getPositionid()!=null)
+				{
+					Query positionq = em.createNativeQuery(positionSql, PositionRole.class);
+					positionq.setParameter(1, tmp.getPositionid());
+					tmp.setPositionid(((PositionRole)positionq.getSingleResult()).getName());
+				}
 			}
 		}
 		catch (Exception e)
@@ -262,12 +280,18 @@ public class UserServiceImpl implements UserService {
 			String positionSql = "select * from position_role where id=?";
 			for(UserInfo tmp:results)
 			{
-				Query deptq = em.createNativeQuery(deptSql, Department.class);
-				deptq.setParameter(1, tmp.getDeptid());
-				tmp.setDeptid(((Department)deptq.getSingleResult()).getName());
-				Query positionq = em.createNativeQuery(positionSql, PositionRole.class);
-				positionq.setParameter(1, tmp.getPositionid());
-				tmp.setPositionid(((PositionRole)positionq.getSingleResult()).getName());
+				if(tmp.getDeptid()!=null)
+				{
+					Query deptq = em.createNativeQuery(deptSql, Department.class);
+					deptq.setParameter(1, tmp.getDeptid());
+					tmp.setDeptid(((Department)deptq.getSingleResult()).getName());
+				}
+				if(tmp.getPositionid()!=null)
+				{
+					Query positionq = em.createNativeQuery(positionSql, PositionRole.class);
+					positionq.setParameter(1, tmp.getPositionid());
+					tmp.setPositionid(((PositionRole)positionq.getSingleResult()).getName());
+				}
 			}
 		}
 		catch (Exception e)
@@ -282,6 +306,17 @@ public class UserServiceImpl implements UserService {
 			}
 		}
 		return results;
+	}
+
+	/**
+	 * 根据email或者mobile查询用户
+	 */
+	public UserInfo findByUserId(String username) {
+		// TODO Auto-generated method stub
+		UserInfo result = dao.findByUserId(username,username);
+		result.setDept(deptDao.findOne(Integer.parseInt(result.getDeptid())));
+		result.setPosition(positionDao.findOne(Integer.parseInt(result.getPositionid())));
+		return result;
 	}
 	
 }
