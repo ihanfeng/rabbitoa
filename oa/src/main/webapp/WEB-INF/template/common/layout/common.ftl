@@ -19,7 +19,7 @@
 	<script src="${cpath}/jqgrid/js/i18n/grid.locale-cn.js" type="text/javascript"></script>
 	<script src="${cpath}/jqgrid/js/jquery.jqGrid.min.js" type="text/javascript"></script>
 	<script src="${cpath}/jquery_ztree/js/jquery.ztree.all-3.5.min.js" type="text/javascript"></script>
-	<script type="text/javascript" src="${cpath}/jquery_ui/themeswitchertool.js"></script>
+	<script type="text/javascript" src="${cpath}/jquery/cookie.js"></script>
 	<style type="text/css">
 	/* remove padding and scrolling from elements that contain an Accordion OR a content-div */
 	.ui-layout-center ,	/* has content-div */
@@ -41,12 +41,11 @@
 		margin:			0;
 	}
 	</style>
-	<script>
-		$(function(){
-			var themeCookie = $.cookie("jquery-ui-theme");
-			if(themeCookie)
-			{
-				$('#jquery-ui').attr("href",themeCookie);
-			}
-		});
+	<script type="text/javascript">
+		var themeCookie = $.cookie('jquery-ui-theme');
+		alert(themeCookie);
+		if(themeCookie)
+		{
+			$('#jquery-ui').attr("href",themeCookie);
+		}
 	</script>
