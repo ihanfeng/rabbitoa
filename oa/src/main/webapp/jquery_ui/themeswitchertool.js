@@ -45,7 +45,7 @@ $.fn.themeswitcher = function(settings){
 		updateCSS( $(this).attr('href') );
 		var themeName = $(this).find('span').text();
 		button.find('.jquery-ui-themeswitcher-title').text( options.buttonPreText + themeName );
-		$.cookie(options.cookieName, $(this).attr('href'),365);
+		$.cookie(options.cookieName, $(this).attr('href'),{ expires: 366,path: '/' });
 		options.onSelect();
 		if(options.closeOnSelect && switcherpane.is(':visible')){ switcherpane.spHide(); }
 		return false;

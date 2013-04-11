@@ -43,7 +43,6 @@
 	</style>
 	<script type="text/javascript">
 		var themeCookie = $.cookie('jquery-ui-theme');
-		alert(themeCookie);
 		if(themeCookie)
 		{
 			$('#jquery-ui').attr("href",themeCookie);

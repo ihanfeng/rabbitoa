@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -40,6 +41,9 @@ public class OaMenu implements Serializable{
 	private int pid;
 
 	private String targettype;
+	
+	@Transient
+	private int checked;
 	
 	public Integer getId() {
 		return id;
@@ -89,6 +93,14 @@ public class OaMenu implements Serializable{
 	public void setTargettype(String targettype)
 	{
 		this.targettype = targettype;
+	}
+
+	public int getChecked() {
+		return checked;
+	}
+
+	public void setChecked(int checked) {
+		this.checked = checked;
 	}
 	
 }
