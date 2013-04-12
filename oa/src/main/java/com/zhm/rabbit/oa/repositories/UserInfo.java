@@ -1,6 +1,7 @@
 package com.zhm.rabbit.oa.repositories;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -54,6 +55,9 @@ public class UserInfo implements Serializable {
 	
 	@Transient
 	private PositionRole position;
+	
+	@Transient
+	private List<OaMenu> menus;
 	
 	public Integer getId() {
 		return id;
@@ -137,6 +141,16 @@ public class UserInfo implements Serializable {
 
 	public void setPosition(PositionRole position) {
 		this.position = position;
+	}
+
+	public List<OaMenu> getMenus()
+	{
+		return menus;
+	}
+
+	public void setMenus(List<OaMenu> menus)
+	{
+		this.menus = menus;
 	}
 	
 }

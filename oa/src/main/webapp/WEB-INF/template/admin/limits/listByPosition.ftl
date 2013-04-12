@@ -9,7 +9,7 @@
 				datatype: "json",
 				height:$(window).height()-85,
 				width:$(window).width()-5,
-			    colNames:['部门','序号'],
+			    colNames:['职位','序号'],
 			   	colModel:[
 			   		{name:'name',index:'name',sortable:false},
 	   				{name:'id',index:'id',sortable:false}
@@ -19,7 +19,7 @@
 			   multiselect: false,
 			   ondblClickRow:function(rowid, iRow, iCol, e)
 			   {
-			   	  showPositionUser();
+			   	  showPositionLimitsPanel();
 			   },
 			   jsonReader : {
 			        root: "rows",
@@ -73,18 +73,11 @@
 	                 dlgDiv[0].style.left = Math.round((parentWidth-dlgWidth)/2) + "px";
 	             }
 	          }
-	        var parameters={
-	        	'caption':'查看人员',
+	         var mgParameters={
+	        	'caption':'设置权限',
 	        	'buttonicon':'none',
-	        	'onClickButton':showPositionUser,
-	        	'title':'查看人员', 
-	        	'id' :'deptDetailBtn'
-	        };
-	        var mgParameters={
-	        	'caption':'编辑职位',
-	        	'buttonicon':'none',
-	        	'onClickButton':showPRoleManagerPanel,
-	        	'title':'编辑职位', 
+	        	'onClickButton':showPositionLimitsPanel,
+	        	'title':'设置权限', 
 	        	'id' :'deptManagerBtn'
 	        };
 	        var separator_parameters={
@@ -92,19 +85,17 @@
 	        }
 			grid.jqGrid('navGrid',"#pInfoContent",{'add':false,'edit':false,'del':false,'search':false},addOptions,editOptions,{},{multipleSearch:true});
 			grid.jqGrid("navSeparatorAdd","#pInfoContent",separator_parameters);
-			grid.jqGrid('navButtonAdd',"#pInfoContent",parameters);
-			grid.jqGrid("navSeparatorAdd","#pInfoContent",separator_parameters);
 			grid.jqGrid('navButtonAdd',"#pInfoContent",mgParameters);
 			re_pos();
 			
       });
-      function showPositionUser()
+      function showPositionLimitsPanel()
       {
       	var gr = jQuery("#infoContent").jqGrid('getGridParam','selrow');
       	if(gr)
 		{
 			var rowData = jQuery('#infoContent').jqGrid('getRowData',gr);
-			$("#user-dialog").attr("title",rowData.name+"--人员列表    (双击行数据可编辑部门人员)");
+			$("#user-dialog").attr("title",rowData.name+"--权限列表    (双击行数据可编辑职位权限)");
 			$("#user-dialog").dialog({
 				bgiframe: true,
 				autoOpen: false,
@@ -120,52 +111,42 @@
 						//$(this).remove(); 
 				}
 				//open:  function() {	 ... },
-				/*
 				,
 				buttons: {
-					'确定': function() {$(this).dialog('close'); },
+					'确定': function() {
+						var iframeObj = window.frames["menusPanel"];
+						var treeObj = iframeObj.$.fn.zTree.getZTreeObj("menus");
+						var nodes = treeObj.getCheckedNodes(true);
+						var menuid="";
+						$.each(nodes, function(key, val) {
+							menuid=menuid+val.id+"|";
+						});
+						$.ajax({
+							type:'POST',
+							url:'${cpath}/lismitsManager/saveLimits',
+							data:{'typeid':gr,'menuids':menuid,type:${type}},
+							error:function(msg)
+							{
+								alert("请求错误！");
+							},
+							success:function(msg)
+							{
+								alert("操作成功！");
+								location.reload();
+							}
+						});
+					 },
 					'取消': function() { 
 						$(this).dialog('close');
 					}
 				}
-				*/
 			});
-			$("#user-dialog").html($("<iframe />").attr("src", "${cpath}/userManager/listByPositionId?positionid="+gr).attr("width","99%").attr("height","100%").attr("frameBorder","0")).dialog('open');
+			$("#user-dialog").html($("<iframe />").attr("name","menusPanel").attr("src", "${cpath}/limitsManager/listByPositionId?positionid="+gr).attr("width","99%").attr("height","100%").attr("frameBorder","0")).dialog('open');
 		}
 		else
 		{
 			alert('请选择一行再进行操作！');
 		}
-      }
-      function showPRoleManagerPanel()
-      {
-      		$("#user-dialog").attr("title","编辑职位");
-			$("#user-dialog").dialog({
-				bgiframe: true,
-				autoOpen: false,
-				resizable: false,
-				width:$(window).width()-80,	height:$(window).height()-50,
-				modal: true,
-				overlay: {	backgroundColor: '#000', opacity: 0.5	},
-				close: function() {	 
-						// Remove the dialog elements
-                		// Note: this will put the original div element in the dom
-						$(this).dialog("destroy");
-               			// Remove the left over element (the original div element)
-						//$(this).remove(); 
-				}
-				//open:  function() {	 ... },
-				/*
-				,
-				buttons: {
-					'确定': function() {$(this).dialog('close'); },
-					'取消': function() { 
-						$(this).dialog('close');
-					}
-				}
-				*/
-			});
-			$("#user-dialog").html($("<iframe />").attr("src", "${cpath}/positionManager/editPositionTree").attr("width","99%").attr("height","100%").attr("frameBorder","0")).dialog('open');
       }
 		function re_pos()
 		{

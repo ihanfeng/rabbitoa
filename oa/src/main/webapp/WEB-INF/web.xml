@@ -96,7 +96,6 @@
 	    <servlet-name>RestletServlet</servlet-name>
 	    <url-pattern>/service/*</url-pattern>
 	</servlet-mapping>
-	 <!-- 开发的时候使用该配置  监控sql语句的执行效率。部署的时候应该去掉该配置。会暴露sql语句。数据库 
 	<servlet>     
 		<servlet-name>DruidStatView</servlet-name>     
 		<servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class> 
@@ -105,7 +104,6 @@
 		<servlet-name>DruidStatView</servlet-name>     
 		<url-pattern>/druid/*</url-pattern> 
 	</servlet-mapping> 
-	-->
   <display-name>Archetype Created Web Application</display-name>
   <error-page>
 		<error-code>401</error-code>

@@ -18,8 +18,16 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import com.google.common.collect.Lists;
+import com.zhm.rabbit.oa.repositories.DepartmentMenu;
+import com.zhm.rabbit.oa.repositories.OaMenu;
+import com.zhm.rabbit.oa.repositories.PositionMenu;
 import com.zhm.rabbit.oa.repositories.UserInfo;
+import com.zhm.rabbit.oa.service.DeptMenuService;
+import com.zhm.rabbit.oa.service.OaMenuService;
+import com.zhm.rabbit.oa.service.PositionMenuService;
 import com.zhm.rabbit.oa.service.UserService;
+import com.zhm.rabbit.oa.utils.RepeatMenuConversion;
 /**
  * 
  * @author zhmlvft
@@ -57,7 +65,19 @@ public class CasCallBackFilter implements Filter {
 			    	 ApplicationContext ac1 =
 			    			 WebApplicationContextUtils.getRequiredWebApplicationContext(req.getSession().getServletContext());
 			    	 UserService userService = (UserService)ac1.getBean("userService");
+			    	 DeptMenuService deptMenuService =(DeptMenuService)ac1.getBean("deptMenuService");
+			    	 PositionMenuService positionMenuService = (PositionMenuService)ac1.getBean("positionMenuService");
+			    	 OaMenuService oaMenuService = (OaMenuService)ac1.getBean("oaMenuService");
 			    	 UserInfo dbUser = userService.findByUserId(username);
+			    	 List<DepartmentMenu> deptMenus = deptMenuService.findByDeptid(Integer.parseInt(dbUser.getDeptid()));
+			         List<PositionMenu> positionMenus = positionMenuService.findByRoleid(Integer.parseInt(dbUser.getPositionid()));
+			         List<Integer> menuids = RepeatMenuConversion.getInstance().conversion(deptMenus, positionMenus, null);
+			         List<OaMenu> menus = Lists.newArrayList();
+			         for(int menuid:menuids)
+			         {
+			         	menus.add(oaMenuService.findById(menuid));
+			         }
+			         dbUser.setMenus(menus);
 			    	 session.setAttribute("currUser", dbUser);
 		    		 String cpath = ((HttpServletRequest)request).getContextPath();
 		    		 session.setAttribute("cpath", cpath);

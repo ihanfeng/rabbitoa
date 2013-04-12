@@ -42,6 +42,8 @@ public class OaMenu implements Serializable{
 
 	private String targettype;
 	
+	private int isparent;
+	
 	@Transient
 	private int checked;
 	
@@ -101,6 +103,16 @@ public class OaMenu implements Serializable{
 
 	public void setChecked(int checked) {
 		this.checked = checked;
+	}
+
+	public int getIsparent()
+	{
+		return isparent;
+	}
+
+	public void setIsparent(int isparent)
+	{
+		this.isparent = isparent;
 	}
 	
 }

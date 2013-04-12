@@ -154,9 +154,9 @@
 			<#if adminMenus?exists>
 				<#list adminMenus as item>
 					<#if !item_has_next>
-						{"id":${item.id}, "pId":${item.pid}, "name":"${item.name}","url":"<#if item.url?exists>${cpath+item.url}<#else>javascript:void(0)</#if>","target":"${item.targettype}" <#if item.pid==-1>,isParent:true</#if>}
+						{"id":${item.id}, "pId":${item.pid}, "name":"${item.name}","url":"<#if item.isparent==0>${cpath+item.url}<#else>javascript:void(0)</#if>","target":"${item.targettype}" <#if item.isparent==1>,isParent:true</#if>}
 					<#else>
-						{"id":${item.id}, "pId":${item.pid}, "name":"${item.name}","url":"<#if item.url?exists>${cpath+item.url}<#else>javascript:void(0)</#if>","target":"${item.targettype}" <#if item.pid==-1>,isParent:true</#if>},
+						{"id":${item.id}, "pId":${item.pid}, "name":"${item.name}","url":"<#if item.isparent==0>${cpath+item.url}<#else>javascript:void(0)</#if>","target":"${item.targettype}" <#if item.isparent==1>,isParent:true</#if>},
 					</#if>
 				</#list>
 			<#else>

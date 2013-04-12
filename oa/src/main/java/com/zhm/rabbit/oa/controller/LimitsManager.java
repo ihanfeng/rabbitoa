@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zhm.rabbit.oa.repositories.DepartmentMenu;
 import com.zhm.rabbit.oa.repositories.OaMenu;
+import com.zhm.rabbit.oa.repositories.PositionMenu;
 import com.zhm.rabbit.oa.service.DeptMenuService;
 import com.zhm.rabbit.oa.service.DeptService;
 import com.zhm.rabbit.oa.service.OaMenuService;
@@ -86,9 +87,33 @@ public class LimitsManager {
 			}
 		}
 		model.addAttribute("menus", menus);
-		return "/admin/menus/listByDeptid";
+		return "/admin/menus/listByTypeid";
 	}
-	
+	@RequestMapping(value="/limitsManager/listByPositionId")
+	public String listByPositionId(int positionid,ModelMap model)
+	{
+		List<PositionMenu> positionMenus = positionMenuService.findByRoleid(positionid);
+		List<OaMenu> menus = oaMenuService.findAll();
+		for(OaMenu tmp1:menus)
+		{
+			boolean flag = true;
+			for(PositionMenu tmp2:positionMenus)
+			{
+				if(tmp1.getId()==tmp2.getMenuid())
+				{
+					tmp1.setChecked(1);
+					flag=false;
+					break;
+				}
+			}
+			if(flag)
+			{
+				tmp1.setChecked(0);
+			}
+		}
+		model.addAttribute("menus", menus);
+		return "/admin/menus/listByTypeid";
+	}
 	@RequestMapping(value="/lismitsManager/saveLimits")
 	public @ResponseBody String saveLimits(int typeid,String menuids,int type)
 	{
@@ -96,6 +121,10 @@ public class LimitsManager {
 		{
 			//部门菜单
 			deptMenuService.saveMenuids(typeid,menuids);
+		}
+		if(type==2)
+		{
+			positionMenuService.saveMenuids(typeid,menuids);
 		}
 		return "";
 	}

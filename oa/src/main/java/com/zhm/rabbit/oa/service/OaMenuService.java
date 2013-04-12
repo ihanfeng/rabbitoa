@@ -10,4 +10,6 @@ public interface OaMenuService {
 
 	List<OaMenu> findByType(int type);
 
+	OaMenu findById(int menuid);
+
 }

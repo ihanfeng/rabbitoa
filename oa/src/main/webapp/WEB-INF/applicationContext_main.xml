@@ -73,7 +73,7 @@
 		    <property name="filterChainDefinitions">
 		        <value>
 		            /home/main = casFilter
-		            /** = roles[ROLE_USER]  
+		            /** = roles[ROLE_USER"]
 		        </value>
 		    </property>
 		</bean>
@@ -85,7 +85,13 @@
 	        <property name="casServerUrlPrefix" value="${sso.loginurlpre}/cas-server"/>  
 	        <property name="casService" value="${sso.currurlpre}/oasys/home/main"/>  
 	    </bean>  
-		<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager" 
+		    depends-on="userRepository,
+		    			deptRepository,
+		    			positionRepository,
+		    			deptMenuRepository,
+		    			positionMenuRepository,
+		    			oaMenuRepository">
 		    <property name="realm" ref="casRealm"/>
 		    <property name="subjectFactory" ref="casSubjectFactory"/>  
 		</bean>

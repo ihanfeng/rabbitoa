@@ -25,5 +25,10 @@ public class OaMenuServiceImpl implements OaMenuService {
 		// TODO Auto-generated method stub
 		return dao.findByType(type);
 	}
-
+	public OaMenu findById(int menuid)
+	{
+		// TODO Auto-generated method stub
+		return dao.findOne(menuid);
+	}
+	
 }

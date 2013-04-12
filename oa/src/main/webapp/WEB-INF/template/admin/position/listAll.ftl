@@ -9,7 +9,7 @@
 				datatype: "json",
 				height:$(window).height()-85,
 				width:$(window).width()-5,
-			    colNames:['部门','序号'],
+			    colNames:['职位','序号'],
 			   	colModel:[
 			   		{name:'name',index:'name',sortable:false},
 	   				{name:'id',index:'id',sortable:false}
@@ -193,7 +193,7 @@
 <body>
 	<div class="ui-layout-center">
 		<h3 class="ui-widget-header">
-			职位列表&nbsp;&nbsp;(双击行数据可查看部门人员)
+			职位列表&nbsp;&nbsp;(双击行数据可查看职位人员)
 		</h3>
 		<div class="ui-layout-content ui-widget-content">
 			<table id="infoContent">
