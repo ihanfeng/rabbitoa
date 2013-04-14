@@ -98,9 +98,15 @@
 			        repeatitems: false,
 			        cell: "cell",
 			        id: "id"
-		    	},
+		    	}
+		    	,
 		    	ondblClickRow: function(rowid) {
-				    jQuery(this).jqGrid('editGridRow', rowid);
+		    		<@shiro.hasPermission name="/userManager/editData">
+				   		 jQuery(this).jqGrid('editGridRow', rowid);
+				    </@shiro.hasPermission>
+				    <@shiro.lacksPermission name="/userManager/editData">
+				    	alert("您没有权限编辑！请联系管理员授权！");
+				    </@shiro.lacksPermission>
 				}
 			});
 			var grid = jQuery("#infoContent");
@@ -137,7 +143,12 @@
 	                 dlgDiv[0].style.left = Math.round((parentWidth-dlgWidth)/2) + "px";
 	             }
 	          }
-			grid.jqGrid('navGrid',"#pInfoContent",{},editOptions,addOptions,{},{multipleSearch:true});
+			 <@shiro.hasPermission name="/userManager/editData">
+				grid.jqGrid('navGrid',"#pInfoContent",{},editOptions,addOptions,{},{multipleSearch:true});
+			  </@shiro.hasPermission>
+			  <@shiro.lacksPermission name="/userManager/editData">
+				grid.jqGrid('navGrid',"#pInfoContent",{add:false,edit:false,del:false},editOptions,addOptions,{},{multipleSearch:true});
+			  </@shiro.lacksPermission>
 			re_pos();
       });
 		function re_pos()

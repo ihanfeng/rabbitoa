@@ -3,6 +3,13 @@ package com.zhm.rabbit.oa.controller;
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.swing.JTable;
+
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperPrint;
+
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -14,6 +21,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zhm.rabbit.oa.model.GridResultBean;
 import com.zhm.rabbit.oa.model.SearchBean;
+import com.zhm.rabbit.oa.report.utils.ExportUtils;
+import com.zhm.rabbit.oa.report.utils.JDesign;
 import com.zhm.rabbit.oa.repositories.UserInfo;
 import com.zhm.rabbit.oa.service.UserService;
 import com.zhm.rabbit.oa.utils.Md5Util;
@@ -99,6 +108,7 @@ public class UserController {
 		boolean isExists = userService.findUserExistsByMobile(mobile);
 		return String.valueOf(isExists);
 	}
+	
 	@RequestMapping(value="/userManager/editData")
 	public @ResponseBody String  editData(UserInfo user,String oper,String id)
 	{
@@ -225,5 +235,77 @@ public class UserController {
 		result.setRows(users);
 		return result;
 	}
-	
+	/**
+	 * 导出用户数据
+	 * @return
+	 */
+	@RequestMapping(value="/userManager/exportAll")
+	public String exportAll(String search_filters,int export_type,HttpServletRequest request,HttpServletResponse response)
+	{
+		SearchBean sb = null;
+		if(search_filters!=null&&!"".equals(search_filters))
+		{
+			ObjectMapper objectMapper = new ObjectMapper(); 
+			try
+			{
+				sb = objectMapper.readValue(search_filters, SearchBean.class);
+			}
+			catch (JsonParseException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			catch (JsonMappingException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			catch (IOException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}  
+		}
+		String cond = "";
+		if(sb!=null)
+		{
+			StringBuffer where = new StringBuffer();
+			cond = SearchUtils.generateSearchCond(sb, where);
+		}
+		List<UserInfo> users = userService.findByCondAll(cond);
+		Object[][] cellData = new Object[users.size()][5];
+		for(int i=0;i<users.size();i++)
+		{
+			UserInfo tmp = users.get(i);
+			cellData[i][0]=tmp.getUsername();
+			cellData[i][1]=tmp.getEmail();
+			cellData[i][2]=tmp.getMobile();
+			cellData[i][3]=tmp.getDeptid();
+			cellData[i][4]=tmp.getPositionid();
+		}
+		String[] columnNames = {"姓名","邮箱","手机号","部门","职位"};
+		//自定义列宽
+		int[] columnWidths = {0,80,240,350,450};
+		JTable tb = new JTable(cellData, columnNames);
+		JasperPrint jasperPrint = JDesign.Preview("用户列表", tb,columnWidths);
+		try {
+			if (export_type==1) {  
+			    ExportUtils.exportExcel(jasperPrint, request, response,"用户列表");
+			}
+			else if(export_type==2)
+			{
+				ExportUtils.exportHtml(jasperPrint, request, response,"用户列表");
+			}
+			else {  
+				ExportUtils.exportPdf(jasperPrint, request, response,"用户列表");
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JRException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

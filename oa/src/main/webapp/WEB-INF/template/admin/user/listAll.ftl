@@ -26,6 +26,7 @@
 				            var retValue = $.parseJSON(data);
 				            var response = retValue.rows;
 				            var s = '<select id="searchid" name="searchid">';
+				            s+='<option value="0">请选择</option>';
 				            if (response && response.length) {
 				                for (var i = 0, l = response.length; i < l; i++) {
 				                	s += '<option value="' + response[i]["id"] + '">' + (blankAry[response[i]["level"]])+response[i]["name"] + '</option>';
@@ -58,6 +59,7 @@
 				            var retValue = $.parseJSON(data);
 				            var response = retValue.rows;
 				            var s = '<select id="searchid" name="searchid">';
+				            s+='<option value="0">请选择</option>';
 				            if (response && response.length) {
 				                for (var i = 0, l = response.length; i < l; i++) {
 				                	s += '<option value="' + response[i]["id"] + '">' + (blankAry[response[i]["level"]])+response[i]["name"] + '</option>';
@@ -98,9 +100,15 @@
 			        repeatitems: false,
 			        cell: "cell",
 			        id: "id"
-		    	},
+		    	}
+		    	,
 		    	ondblClickRow: function(rowid) {
-				    jQuery(this).jqGrid('editGridRow', rowid);
+		    		<@shiro.hasPermission name="/userManager/editData">
+				   		 jQuery(this).jqGrid('editGridRow', rowid);
+				    </@shiro.hasPermission>
+				    <@shiro.lacksPermission name="/userManager/editData">
+				    	alert("您没有权限编辑！请联系管理员授权！");
+				    </@shiro.lacksPermission>
 				}
 			});
 			var grid = jQuery("#infoContent");
@@ -137,9 +145,65 @@
 	                 dlgDiv[0].style.left = Math.round((parentWidth-dlgWidth)/2) + "px";
 	             }
 	          }
-			grid.jqGrid('navGrid',"#pInfoContent",{},editOptions,addOptions,{},{multipleSearch:true});
+	          <@shiro.hasPermission name="/userManager/editData">
+				grid.jqGrid('navGrid',"#pInfoContent",{},editOptions,addOptions,{},{multipleSearch:true});
+			  </@shiro.hasPermission>
+			  <@shiro.lacksPermission name="/userManager/editData">
+				grid.jqGrid('navGrid',"#pInfoContent",{add:false,edit:false,del:false},editOptions,addOptions,{},{multipleSearch:true});
+			  </@shiro.lacksPermission>
+			  var parameters={
+	        	'caption':'导出数据',
+	        	'buttonicon':'none',
+	        	'onClickButton':exportData,
+	        	'title':'导出数据', 
+	        	'id' :'exportDataBtn'
+	          };
+	          var separator_parameters={
+	        	sepclass : "ui-separator",sepcontent: ''
+	          }
+	          grid.jqGrid("navSeparatorAdd","#pInfoContent",separator_parameters);
+			  grid.jqGrid('navButtonAdd',"#pInfoContent",parameters);
 			re_pos();
       });
+       function exportData()
+       {
+       	   $("#export-dialog").attr("title","导出数据    (请选择导出格式)");
+			$("#export-dialog").dialog({
+				bgiframe: true,
+				autoOpen: true,
+				resizable: false,
+				width:330,	height:90,
+				modal: true,
+				overlay: {	backgroundColor: '#000', opacity: 0.5	},
+				close: function() {	 
+						// Remove the dialog elements
+                		// Note: this will put the original div element in the dom
+						$(this).dialog("destroy");
+               			// Remove the left over element (the original div element)
+						//$(this).remove(); 
+				},
+				open:  function() {
+					$('#excelBtn').button().click(function(e){
+						exportFinalData(1);
+					});
+					$('#wordBtn').button().click(function(e){
+						exportFinalData(2);
+					});
+					$('#pdfBtn').button().click(function(e){
+						exportFinalData(3);
+					});
+				}
+			});
+       }
+       function exportFinalData(type)
+       {
+       	   var grid = jQuery("#infoContent");
+       	   //获取查询条件
+       	   var filters = grid.getGridParam("postData").filters;
+       	   $('#export_type').val(type);
+       	   $('#search_filters').val(filters);
+       	   document.forms["exportForm"].submit();
+       }
 		function re_pos()
 		{
 			if($('#infoContent')[0])
@@ -172,6 +236,15 @@
 			<table id="infoContent">
     	 	</table>
     	 	<div id="pInfoContent"></div>
+		</div>
+		<div id="export-dialog" style="display:none">
+			<button id="excelBtn">Excel格式</button>
+			<button id="wordBtn">网页格式</button>
+			<button id="pdfBtn">PDF格式</button>
+			<form name="exportForm" action="${cpath}/userManager/exportAll" method="POST" style="display:none" target="_blank">
+				<input type="hidden" id="search_filters" name="search_filters" />
+				<input type="hidden" id="export_type" name="export_type"/>
+			</form>
 		</div>
 	</div>
 </body>

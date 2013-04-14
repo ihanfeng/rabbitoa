@@ -2,6 +2,8 @@ package com.zhm.rabbit.oa.controller;
 
 import java.util.List;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -38,26 +40,56 @@ public class LimitsManager {
 	@RequestMapping(value="/limitsManager/list")
 	public String list(ModelMap model,Integer type)
 	{
+		Subject subject = SecurityUtils.getSubject();
 		type=type==null?1:type;
 		//权限分4种，按部门授权  按职位授权 按用户组授权 直接授权 依次 type=1、2、3、4
 		model.addAttribute("type", type);
 		if(type==1)
 		{
-			//找出所有部门
-			return "/admin/limits/listByDept";
+			if(subject.isPermitted("/limitsManager/list?type=1"))
+			{
+				//找出所有部门
+				return "/admin/limits/listByDept";
+			}
+			else
+			{
+				return "/common/no_limits_to_see";
+			}
+		
 		}
 		else if(type==2)
 		{
-			//找出所有的职位
-			return "/admin/limits/listByPosition";
+			if(subject.isPermitted("/limitsManager/list?type=2"))
+			{
+				//找出所有的职位
+				return "/admin/limits/listByPosition";
+			}
+			else
+			{
+				return "/common/no_limits_to_see";
+			}
 		}
 		else if(type==3)
 		{
-			return null;
+			if(subject.isPermitted("/limitsManager/list?type=3"))
+			{
+				return null;
+			}
+			else
+			{
+				return "/common/no_limits_to_see";
+			}
 		}
 		else
 		{
-			return "/admin/limits/listByUser";
+			if(subject.isPermitted("/limitsManager/list?type=4"))
+			{
+				return "/admin/limits/listByUser";
+			}
+			else
+			{
+				return "/common/no_limits_to_see";
+			}
 		}
 	}
 	/**

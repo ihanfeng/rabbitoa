@@ -48,4 +48,9 @@ public class HomeController {
 	{
 		return "/common/innerIndex";
 	}
+	@RequestMapping(value="/unauthorized")
+	public String unauthorized()
+	{
+		return "/common/no_limits_to_see";
+	}
 }

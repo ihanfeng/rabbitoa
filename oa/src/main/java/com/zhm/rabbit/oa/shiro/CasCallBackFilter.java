@@ -65,19 +65,29 @@ public class CasCallBackFilter implements Filter {
 			    	 ApplicationContext ac1 =
 			    			 WebApplicationContextUtils.getRequiredWebApplicationContext(req.getSession().getServletContext());
 			    	 UserService userService = (UserService)ac1.getBean("userService");
-			    	 DeptMenuService deptMenuService =(DeptMenuService)ac1.getBean("deptMenuService");
-			    	 PositionMenuService positionMenuService = (PositionMenuService)ac1.getBean("positionMenuService");
 			    	 OaMenuService oaMenuService = (OaMenuService)ac1.getBean("oaMenuService");
 			    	 UserInfo dbUser = userService.findByUserId(username);
-			    	 List<DepartmentMenu> deptMenus = deptMenuService.findByDeptid(Integer.parseInt(dbUser.getDeptid()));
-			         List<PositionMenu> positionMenus = positionMenuService.findByRoleid(Integer.parseInt(dbUser.getPositionid()));
-			         List<Integer> menuids = RepeatMenuConversion.getInstance().conversion(deptMenus, positionMenus, null);
-			         List<OaMenu> menus = Lists.newArrayList();
-			         for(int menuid:menuids)
-			         {
-			         	menus.add(oaMenuService.findById(menuid));
-			         }
-			         dbUser.setMenus(menus);
+			    	 if("ROLE_ADMIN".equals(dbUser.getRole()))
+			    	 {
+			    		 //管理员给全部菜单
+			    		 List<OaMenu> menus = oaMenuService.findAll();
+			    		 dbUser.setMenus(menus);
+			    	 }
+			    	 else
+			    	 {
+			    		 DeptMenuService deptMenuService =(DeptMenuService)ac1.getBean("deptMenuService");
+				    	 PositionMenuService positionMenuService = (PositionMenuService)ac1.getBean("positionMenuService");
+				    	
+				    	 List<DepartmentMenu> deptMenus = deptMenuService.findByDeptid(Integer.parseInt(dbUser.getDeptid()));
+				         List<PositionMenu> positionMenus = positionMenuService.findByRoleid(Integer.parseInt(dbUser.getPositionid()));
+				         List<Integer> menuids = RepeatMenuConversion.getInstance().conversion(deptMenus, positionMenus, null);
+				         List<OaMenu> menus = Lists.newArrayList();
+				         for(int menuid:menuids)
+				         {
+				         	menus.add(oaMenuService.findById(menuid));
+				         }
+				         dbUser.setMenus(menus);
+			    	 }
 			    	 session.setAttribute("currUser", dbUser);
 		    		 String cpath = ((HttpServletRequest)request).getContextPath();
 		    		 session.setAttribute("cpath", cpath);

@@ -8,7 +8,6 @@ import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.cas.CasRealm;
-import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,30 +60,54 @@ public class MyCasRealm extends CasRealm {
 	        if (user == null){
 	        	return null;
 	        }
-	        List<DepartmentMenu> deptMenus = deptMenuService.findByDeptid(Integer.parseInt(user.getDeptid()));
-	        List<PositionMenu> positionMenus = positionMenuService.findByRoleid(Integer.parseInt(user.getPositionid()));
-	        List<Integer> menuids = RepeatMenuConversion.getInstance().conversion(deptMenus, positionMenus, null);
-	        List<OaMenu> menus = Lists.newArrayList();
-	        for(int menuid:menuids)
+	        String dbRole = user.getRole();
+	        if("ROLE_ADMIN".equals(dbRole))
 	        {
-	        	menus.add(oaMenuService.findById(menuid));
+	        	List<OaMenu> dbMenus = oaMenuService.findAll();
+	        	SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+				Set<String> permissions = Sets.newHashSet();
+	        	for(OaMenu tmp:dbMenus)
+				{
+					permissions.add(tmp.getUrl());
+				}
+	        	if(!super.getDefaultRoles().equals(user.getRole()))
+				{
+					info.setRoles(Sets.newHashSet(super.getDefaultRoles(),user.getRole()));
+				}
+				else
+				{
+					info.setRoles(Sets.newHashSet(user.getRole()));
+				}
+				info.setStringPermissions(permissions);
+				return info;
 	        }
-			SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-			Set<String> permissions = Sets.newHashSet();
-			for(OaMenu tmp:menus)
-			{
-				permissions.add(tmp.getUrl());
-			}
-			if(!super.getDefaultRoles().equals(user.getRole()))
-			{
-				info.setRoles(Sets.newHashSet(super.getDefaultRoles(),user.getRole()));
-			}
-			else
-			{
-				info.setRoles(Sets.newHashSet(user.getRole()));
-			}
-			info.setStringPermissions(permissions);
-			return info;
+	        else
+	        {
+		        List<DepartmentMenu> deptMenus = deptMenuService.findByDeptid(Integer.parseInt(user.getDeptid()));
+		        List<PositionMenu> positionMenus = positionMenuService.findByRoleid(Integer.parseInt(user.getPositionid()));
+		        List<Integer> menuids = RepeatMenuConversion.getInstance().conversion(deptMenus, positionMenus, null);
+		        List<OaMenu> menus = Lists.newArrayList();
+		        for(int menuid:menuids)
+		        {
+		        	menus.add(oaMenuService.findById(menuid));
+		        }
+				SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+				Set<String> permissions = Sets.newHashSet();
+				for(OaMenu tmp:menus)
+				{
+					permissions.add(tmp.getUrl());
+				}
+				if(!super.getDefaultRoles().equals(user.getRole()))
+				{
+					info.setRoles(Sets.newHashSet(super.getDefaultRoles(),user.getRole()));
+				}
+				else
+				{
+					info.setRoles(Sets.newHashSet(user.getRole()));
+				}
+				info.setStringPermissions(permissions);
+				return info;
+	        }
 		}
 		else
 		{

@@ -93,8 +93,10 @@
 			grid.jqGrid('navGrid',"#pInfoContent",{'add':false,'edit':false,'del':false,'search':false},addOptions,editOptions,{},{multipleSearch:true});
 			grid.jqGrid("navSeparatorAdd","#pInfoContent",separator_parameters);
 			grid.jqGrid('navButtonAdd',"#pInfoContent",parameters);
-			grid.jqGrid("navSeparatorAdd","#pInfoContent",separator_parameters);
-			grid.jqGrid('navButtonAdd',"#pInfoContent",mgParameters);
+			<@shiro.hasPermission name="/deptManager/editDeptTree">
+				grid.jqGrid("navSeparatorAdd","#pInfoContent",separator_parameters);
+				grid.jqGrid('navButtonAdd',"#pInfoContent",mgParameters);
+			</@shiro.hasPermission>
 			re_pos();
 			
       });

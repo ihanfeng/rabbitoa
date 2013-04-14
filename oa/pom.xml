@@ -361,6 +361,16 @@
         <artifactId>hibernate-entitymanager</artifactId>  
         <version>4.1.6.Final</version>  
     </dependency>  
+    <dependency>
+	  <groupId>shiro.freemarker</groupId>
+	  <artifactId>tags</artifactId>
+	  <version>1.0</version>
+	</dependency>
+	<dependency>
+	  <groupId>org.aspectj</groupId>
+	  <artifactId>aspectjweaver</artifactId>
+	  <version>1.7.1</version>
+	</dependency>
 </dependencies>
 <build>
     <finalName>oasys</finalName>

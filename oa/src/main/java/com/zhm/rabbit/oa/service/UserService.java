@@ -44,4 +44,6 @@ public interface UserService {
 
 	UserInfo findByUserId(String username);
 
+	List<UserInfo> findByCondAll(String cond);
+
 }

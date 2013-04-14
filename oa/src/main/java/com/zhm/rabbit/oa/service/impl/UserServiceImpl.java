@@ -318,5 +318,47 @@ public class UserServiceImpl implements UserService {
 		result.setPosition(positionDao.findOne(Integer.parseInt(result.getPositionid())));
 		return result;
 	}
+
+	public List<UserInfo> findByCondAll(String cond) {
+		// TODO Auto-generated method stub
+		List<UserInfo> results=null;
+		EntityManager em=null;
+		try
+		{
+			em = emf.createEntityManager();
+			String sql = "select * from user_info where 1=1 "+ cond+" ";
+			Query q = em.createNativeQuery(sql, UserInfo.class);
+			results = q.getResultList();
+			String deptSql = "select * from department where id=?";
+			String positionSql = "select * from position_role where id=?";
+			for(UserInfo tmp:results)
+			{
+				if(tmp.getDeptid()!=null)
+				{
+					Query deptq = em.createNativeQuery(deptSql, Department.class);
+					deptq.setParameter(1, tmp.getDeptid());
+					tmp.setDeptid(((Department)deptq.getSingleResult()).getName());
+				}
+				if(tmp.getPositionid()!=null)
+				{
+					Query positionq = em.createNativeQuery(positionSql, PositionRole.class);
+					positionq.setParameter(1, tmp.getPositionid());
+					tmp.setPositionid(((PositionRole)positionq.getSingleResult()).getName());
+				}
+			}
+		}
+		catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally{
+			if(em!=null)
+			{
+				em.close();
+			}
+		}
+		return results;
+	}
 	
 }
