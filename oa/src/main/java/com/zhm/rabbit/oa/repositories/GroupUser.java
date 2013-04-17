@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -34,7 +35,22 @@ public class GroupUser implements Serializable{
 	private String userid;
 	
 	private int groupid;
-
+	
+	@Transient
+	private String username;
+	
+	@Transient
+	private String email;
+	
+	@Transient
+	private String mobile;
+	
+	@Transient
+	private String deptid;
+	
+	@Transient
+	private String positionid;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -59,7 +75,44 @@ public class GroupUser implements Serializable{
 		this.groupid = groupid;
 	}
 
-	
-	
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getMobile() {
+		return mobile;
+	}
+
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
+
+	public String getDeptid() {
+		return deptid;
+	}
+
+	public void setDeptid(String deptid) {
+		this.deptid = deptid;
+	}
+
+	public String getPositionid() {
+		return positionid;
+	}
+
+	public void setPositionid(String positionid) {
+		this.positionid = positionid;
+	}
 	
 }

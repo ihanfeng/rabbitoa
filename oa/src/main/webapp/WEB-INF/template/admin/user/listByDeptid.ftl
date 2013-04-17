@@ -26,6 +26,7 @@
 				            var retValue = $.parseJSON(data);
 				            var response = retValue.rows;
 				            var s = '<select id="searchid" name="searchid">';
+				             s+='<option value="0">请选择</option>';
 				            if (response && response.length) {
 				                for (var i = 0, l = response.length; i < l; i++) {
 				                	s += '<option value="' + response[i]["id"] + '">' + (blankAry[response[i]["level"]])+response[i]["name"] + '</option>';
@@ -58,6 +59,7 @@
 				            var retValue = $.parseJSON(data);
 				            var response = retValue.rows;
 				            var s = '<select id="searchid" name="searchid">';
+				             s+='<option value="0">请选择</option>';
 				            if (response && response.length) {
 				                for (var i = 0, l = response.length; i < l; i++) {
 				                	s += '<option value="' + response[i]["id"] + '">' + (blankAry[response[i]["level"]])+response[i]["name"] + '</option>';

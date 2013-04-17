@@ -95,7 +95,7 @@
       	if(gr)
 		{
 			var rowData = jQuery('#infoContent').jqGrid('getRowData',gr);
-			$("#user-dialog").attr("title",rowData.name+"--权限列表    (双击行数据可编辑职位权限)");
+			$("#user-dialog").attr("title",rowData.name+"--权限列表 ");
 			$("#user-dialog").dialog({
 				bgiframe: true,
 				autoOpen: false,
@@ -174,7 +174,7 @@
 <body>
 	<div class="ui-layout-center">
 		<h3 class="ui-widget-header">
-			职位列表&nbsp;&nbsp;(双击行数据可查看部门人员)
+			职位列表&nbsp;&nbsp;(双击行数据可编辑权限)
 		</h3>
 		<div class="ui-layout-content ui-widget-content">
 			<table id="infoContent">

@@ -2,7 +2,7 @@
 <script type="text/javascript">
       $(function(){
 			jQuery("#infoContent").jqGrid({
-				url:"${cpath}/userManager/listByPositionId/getJson?positionid=${positionid}",
+				url:"${cpath}/groupUserManager/listByGroupid/getJson?groupid=${groupid}",
 				datatype: "json",
 				height:$(window).height(),
 				width:$(window).width(),
@@ -20,7 +20,7 @@
 	   				{name:'email',index:'email',sortable:true,editable: true,editrules:{email:true}},
 	   				{name:'deptid',index:'deptid',stype:'select',sortable:true,search:true,searchoptions:{
 	   					sopt:['eq','ne'],
-	   					dataUrl: '${cpath}/positionManager/listAll/getJson',
+	   					dataUrl: '${cpath}/deptManager/listAll/getJson',
 			            buildSelect: function (data) {
 				            var blankAry=['','&nbsp;&nbsp;&nbsp;&nbsp;','&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;','&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'];
 				            var retValue = $.parseJSON(data);
@@ -37,7 +37,7 @@
 	   				},
 	   				edittype: 'select',editable: true,
 	   				editoptions: {
-			            dataUrl: '${cpath}/positionManager/listAll/getJson',
+			            dataUrl: '${cpath}/deptManager/listAll/getJson',
 			            buildSelect: function (data) {
 			            var blankAry=['','&nbsp;&nbsp;&nbsp;&nbsp;','&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;','&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'];
 			            var retValue = $.parseJSON(data);
