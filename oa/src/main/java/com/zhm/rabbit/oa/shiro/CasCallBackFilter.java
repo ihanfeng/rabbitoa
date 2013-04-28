@@ -20,10 +20,14 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.google.common.collect.Lists;
 import com.zhm.rabbit.oa.repositories.DepartmentMenu;
+import com.zhm.rabbit.oa.repositories.GroupMenu;
+import com.zhm.rabbit.oa.repositories.GroupUser;
 import com.zhm.rabbit.oa.repositories.OaMenu;
 import com.zhm.rabbit.oa.repositories.PositionMenu;
 import com.zhm.rabbit.oa.repositories.UserInfo;
 import com.zhm.rabbit.oa.service.DeptMenuService;
+import com.zhm.rabbit.oa.service.GroupMenuService;
+import com.zhm.rabbit.oa.service.GroupUserService;
 import com.zhm.rabbit.oa.service.OaMenuService;
 import com.zhm.rabbit.oa.service.PositionMenuService;
 import com.zhm.rabbit.oa.service.UserService;
@@ -66,6 +70,8 @@ public class CasCallBackFilter implements Filter {
 			    			 WebApplicationContextUtils.getRequiredWebApplicationContext(req.getSession().getServletContext());
 			    	 UserService userService = (UserService)ac1.getBean("userService");
 			    	 OaMenuService oaMenuService = (OaMenuService)ac1.getBean("oaMenuService");
+			    	 GroupUserService groupUserService = (GroupUserService)ac1.getBean("groupUserService");
+			    	 GroupMenuService groupMenuService = (GroupMenuService)ac1.getBean("groupMenuService");
 			    	 UserInfo dbUser = userService.findByUserId(username);
 			    	 if("ROLE_ADMIN".equals(dbUser.getRole()))
 			    	 {
@@ -77,10 +83,20 @@ public class CasCallBackFilter implements Filter {
 			    	 {
 			    		 DeptMenuService deptMenuService =(DeptMenuService)ac1.getBean("deptMenuService");
 				    	 PositionMenuService positionMenuService = (PositionMenuService)ac1.getBean("positionMenuService");
-				    	
+				    	//部门权限菜单
 				    	 List<DepartmentMenu> deptMenus = deptMenuService.findByDeptid(Integer.parseInt(dbUser.getDeptid()));
-				         List<PositionMenu> positionMenus = positionMenuService.findByRoleid(Integer.parseInt(dbUser.getPositionid()));
-				         List<Integer> menuids = RepeatMenuConversion.getInstance().conversion(deptMenus, positionMenus, null);
+				        //职位权限菜单
+				    	 List<PositionMenu> positionMenus = positionMenuService.findByRoleid(Integer.parseInt(dbUser.getPositionid()));
+				        //用户组权限菜单
+				    	 List<GroupUser> groupUsers =  groupUserService.findByUserid(dbUser.getId());
+				        List<GroupMenu> groupMenus = Lists.newArrayList();
+				        for(GroupUser tmp:groupUsers)
+				        {
+				        	List<GroupMenu> tmpGMenus = groupMenuService.findByGroupid(tmp.getGroupid());
+				        	groupMenus.addAll(tmpGMenus);
+				        }
+				        //汇总3个地方的menuid,去重复。
+				         List<Integer> menuids = RepeatMenuConversion.getInstance().conversion(deptMenus, positionMenus, groupMenus);
 				         List<OaMenu> menus = Lists.newArrayList();
 				         for(int menuid:menuids)
 				         {

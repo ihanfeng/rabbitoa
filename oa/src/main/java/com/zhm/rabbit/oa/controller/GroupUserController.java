@@ -12,6 +12,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.common.collect.Lists;
 import com.zhm.rabbit.oa.model.GridResultBean;
 import com.zhm.rabbit.oa.model.SearchBean;
 import com.zhm.rabbit.oa.repositories.GroupUser;
@@ -96,5 +97,49 @@ public class GroupUserController {
 			result.setRows(users);
 			return result;
 		}
+	}
+	@RequestMapping(value="/groupUserManager/preAddUserToGroup")
+	public String preAddUserToGroup(int groupid,ModelMap model)
+	{
+		List<GroupUser> users = groupUserService.findAllByGroupid(groupid);
+		List<UserInfo> allUsers = userService.findAll();
+		List<UserInfo> unSelUsers = delRepeatUser(allUsers,users);
+		model.addAttribute("selUsers", users);
+		model.addAttribute("unSelUsers", unSelUsers);
+		return "/admin/groupUser/addUserToGroup";
+	}
+	/**
+	 * 过滤出未添加到该用户组的用户
+	 * @param allUsers
+	 * @param users
+	 * @return
+	 */
+	private List<UserInfo> delRepeatUser(List<UserInfo> allUsers,List<GroupUser> users)
+	{
+		List<UserInfo> results = Lists.newArrayList();
+		for(UserInfo tmp1:allUsers)
+		{
+			boolean flag = true;
+			for(GroupUser tmp2:users)
+			{
+				if(tmp1.getId().intValue()==tmp2.getId().intValue())
+				{
+					flag=false;
+					break;
+				}
+			}
+			if(flag)
+			{
+				results.add(tmp1);
+			}
+		}
+		return results;
+	}
+	
+	@RequestMapping(value="/groupUserManager/addUserToGroup")
+	public @ResponseBody String addUserToGroup(int groupid,String selUserids)
+	{
+		groupUserService.saveUsers(groupid,selUserids);
+		return "";
 	}
 }

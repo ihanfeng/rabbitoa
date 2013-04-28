@@ -8,37 +8,38 @@ import javax.persistence.EntityTransaction;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.zhm.rabbit.oa.repositories.DepartmentMenu;
-import com.zhm.rabbit.oa.repositories.dao.DeptMenuRepository;
-import com.zhm.rabbit.oa.service.DeptMenuService;
-@Transactional
-@Service("deptMenuService")
-public class DeptMenuServiceImpl implements DeptMenuService {
-	
+import com.zhm.rabbit.oa.repositories.GroupMenu;
+import com.zhm.rabbit.oa.repositories.dao.GroupMenuRepository;
+import com.zhm.rabbit.oa.service.GroupMenuService;
+@Service("groupMenuService")
+public class GroupMenuServiceImpl implements GroupMenuService
+{
 	@Autowired
-	private DeptMenuRepository dao;
+	private GroupMenuRepository dao;
 	@Autowired
 	private EntityManagerFactory emf;
-	public List<DepartmentMenu> findByDeptid(int deptid) {
+	public List<GroupMenu> findByGroupid(int groupid)
+	{
 		// TODO Auto-generated method stub
-		return dao.findByDeptid(deptid);
+		return dao.findByGroupid(groupid);
 	}
-	public void saveMenuids(int typeid, String menuids) {
+
+	public void saveMenuids(int typeid, String menuids)
+	{
 		// TODO Auto-generated method stub
 		EntityManager em=null;
 		em = emf.createEntityManager();
 		EntityTransaction t = em.getTransaction();
 		try {
 			t.begin();
-			em.createNativeQuery("delete from dept_menu where deptid=?").setParameter(1, typeid).executeUpdate();
+			em.createNativeQuery("delete from oa_group_menu where groupid=?").setParameter(1, typeid).executeUpdate();
 			String[] ary = menuids.split("\\|");
 			for(String tmp:ary)
 			{
 				if(!"".equals(tmp))
 				{
-					em.createNativeQuery("insert into dept_menu(deptid,menuid) values(?,?)")
+					em.createNativeQuery("insert into oa_group_menu(groupid,menuid) values(?,?)")
 					.setParameter(1, typeid).setParameter(2, tmp).executeUpdate();
 				}
 			}
@@ -55,5 +56,6 @@ public class DeptMenuServiceImpl implements DeptMenuService {
 			}
 		}
 	}
+	
 	
 }

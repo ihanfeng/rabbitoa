@@ -11,4 +11,10 @@ public interface GroupUserService {
 	List<GroupUser> findByCondAndGroupid(int page, int rows, String sidx,
 			String sord, String cond, int groupid);
 
+	List<GroupUser> findAllByGroupid(int groupid);
+
+	void saveUsers(int groupid, String selUserids);
+
+	List<GroupUser> findByUserid(Integer id);
+
 }

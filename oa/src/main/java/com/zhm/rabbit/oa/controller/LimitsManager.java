@@ -11,10 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zhm.rabbit.oa.repositories.DepartmentMenu;
+import com.zhm.rabbit.oa.repositories.GroupMenu;
 import com.zhm.rabbit.oa.repositories.OaMenu;
 import com.zhm.rabbit.oa.repositories.PositionMenu;
 import com.zhm.rabbit.oa.service.DeptMenuService;
 import com.zhm.rabbit.oa.service.DeptService;
+import com.zhm.rabbit.oa.service.GroupMenuService;
 import com.zhm.rabbit.oa.service.OaMenuService;
 import com.zhm.rabbit.oa.service.PositionMenuService;
 import com.zhm.rabbit.oa.service.PositionService;
@@ -37,6 +39,8 @@ public class LimitsManager {
 	private UserMenuService userMenuService;
 	@Autowired
 	private OaMenuService oaMenuService;
+	@Autowired
+	private GroupMenuService groupMenuService;
 	@RequestMapping(value="/limitsManager/list")
 	public String list(ModelMap model,Integer type)
 	{
@@ -73,7 +77,7 @@ public class LimitsManager {
 		{
 			if(subject.isPermitted("/limitsManager/list?type=3"))
 			{
-				return null;
+				return "/admin/limits/listByGroup";
 			}
 			else
 			{
@@ -106,7 +110,7 @@ public class LimitsManager {
 			boolean flag = true;
 			for(DepartmentMenu tmp2:deptMenus)
 			{
-				if(tmp1.getId()==Integer.parseInt(tmp2.getMenuid()))
+				if(tmp1.getId().intValue()==Integer.parseInt(tmp2.getMenuid()))
 				{
 					tmp1.setChecked(1);
 					flag=false;
@@ -131,7 +135,32 @@ public class LimitsManager {
 			boolean flag = true;
 			for(PositionMenu tmp2:positionMenus)
 			{
-				if(tmp1.getId()==tmp2.getMenuid())
+				if(tmp1.getId().intValue()==tmp2.getMenuid().intValue())
+				{
+					tmp1.setChecked(1);
+					flag=false;
+					break;
+				}
+			}
+			if(flag)
+			{
+				tmp1.setChecked(0);
+			}
+		}
+		model.addAttribute("menus", menus);
+		return "/admin/menus/listByTypeid";
+	}
+	@RequestMapping(value="/limitsManager/listByGroupId")
+	public String listByGroupId(int groupid,ModelMap model)
+	{
+		List<GroupMenu> groupMenus = groupMenuService.findByGroupid(groupid);
+		List<OaMenu> menus = oaMenuService.findAll();
+		for(OaMenu tmp1:menus)
+		{
+			boolean flag = true;
+			for(GroupMenu tmp2:groupMenus)
+			{
+				if(tmp1.getId().intValue()==tmp2.getMenuid().intValue())
 				{
 					tmp1.setChecked(1);
 					flag=false;
@@ -157,6 +186,10 @@ public class LimitsManager {
 		if(type==2)
 		{
 			positionMenuService.saveMenuids(typeid,menuids);
+		}
+		if(type==3)
+		{
+			groupMenuService.saveMenuids(typeid,menuids);
 		}
 		return "";
 	}

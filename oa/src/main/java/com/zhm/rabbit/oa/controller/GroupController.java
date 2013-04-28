@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.zhm.rabbit.oa.model.GridResultBean;
 import com.zhm.rabbit.oa.model.SearchBean;
 import com.zhm.rabbit.oa.repositories.Group;
-import com.zhm.rabbit.oa.repositories.UserInfo;
 import com.zhm.rabbit.oa.service.GroupService;
-import com.zhm.rabbit.oa.utils.Md5Util;
 import com.zhm.rabbit.oa.utils.SearchUtils;
 /**
  * 用户组管理

@@ -269,10 +269,14 @@ function addThemeSwitcher ( container, position ) {
  *
  *	Remove the cookie set by the UI Themeswitcher to reset a page to default styles
  */
-function removeUITheme ( cookieName, removeCookie ) {
+function removeUITheme () {
 	$('link.ui-theme').remove();
+	var cssLink = $('<link href="'+cpath+'/jquery_ui/themes/start/jquery-ui.css" type="text/css" rel="Stylesheet" class="ui-theme" />');
+	$("head").append(cssLink);
+	if( $("link.ui-theme").size() > 3){
+		$("link.ui-theme:first").remove();
+	}	
 	$("#mainFrame").contents().find("#jquery-ui").attr("href",cpath+"/jquery_ui/themes/start/jquery-ui.css");
 	$('.jquery-ui-themeswitcher-title').text( '选择皮肤' );
-	if (removeCookie !== false)
-		$.cookie( cookieName || 'jquery-ui-theme', null );
+	$.cookie('jquery-ui-theme', cpath+'/jquery_ui/themes/start/jquery-ui.css',{ expires: 366,path: '/' });
 };

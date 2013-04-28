@@ -15,10 +15,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.zhm.rabbit.oa.repositories.DepartmentMenu;
+import com.zhm.rabbit.oa.repositories.GroupMenu;
+import com.zhm.rabbit.oa.repositories.GroupUser;
 import com.zhm.rabbit.oa.repositories.OaMenu;
 import com.zhm.rabbit.oa.repositories.PositionMenu;
 import com.zhm.rabbit.oa.repositories.UserInfo;
 import com.zhm.rabbit.oa.service.DeptMenuService;
+import com.zhm.rabbit.oa.service.GroupMenuService;
+import com.zhm.rabbit.oa.service.GroupUserService;
 import com.zhm.rabbit.oa.service.OaMenuService;
 import com.zhm.rabbit.oa.service.PositionMenuService;
 import com.zhm.rabbit.oa.service.UserService;
@@ -30,6 +34,10 @@ public class MyCasRealm extends CasRealm {
 	private DeptMenuService deptMenuService;
 	@Autowired
 	private PositionMenuService positionMenuService;
+	@Autowired
+	private GroupMenuService groupMenuService;
+	@Autowired
+	private GroupUserService groupUserService;
 	@Autowired
 	private OaMenuService oaMenuService;
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
@@ -85,7 +93,14 @@ public class MyCasRealm extends CasRealm {
 	        {
 		        List<DepartmentMenu> deptMenus = deptMenuService.findByDeptid(Integer.parseInt(user.getDeptid()));
 		        List<PositionMenu> positionMenus = positionMenuService.findByRoleid(Integer.parseInt(user.getPositionid()));
-		        List<Integer> menuids = RepeatMenuConversion.getInstance().conversion(deptMenus, positionMenus, null);
+		        List<GroupUser> groupUsers =  groupUserService.findByUserid(user.getId());
+		        List<GroupMenu> groupMenus = Lists.newArrayList();
+		        for(GroupUser tmp:groupUsers)
+		        {
+		        	List<GroupMenu> tmpGMenus = groupMenuService.findByGroupid(tmp.getGroupid());
+		        	groupMenus.addAll(tmpGMenus);
+		        }
+		        List<Integer> menuids = RepeatMenuConversion.getInstance().conversion(deptMenus, positionMenus, groupMenus);
 		        List<OaMenu> menus = Lists.newArrayList();
 		        for(int menuid:menuids)
 		        {

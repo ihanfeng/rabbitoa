@@ -32,7 +32,16 @@ public class PositionMenuServiceImpl implements PositionMenuService {
 		EntityTransaction t = em.getTransaction();
 		try {
 			t.begin();
-			em.createQuery("delete from PositionMenu d where d.roleid=?").setParameter(1, typeid).executeUpdate();
+			em.createNativeQuery("delete from position_menu where roleid=?").setParameter(1, typeid).executeUpdate();
+			String[] ary = menuids.split("\\|");
+			for(String tmp:ary)
+			{
+				if(!"".equals(tmp))
+				{
+					em.createNativeQuery("insert into position_menu(roleid,menuid) values(?,?)")
+					.setParameter(1, typeid).setParameter(2, tmp).executeUpdate();
+				}
+			}
 			t.commit();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -43,17 +52,6 @@ public class PositionMenuServiceImpl implements PositionMenuService {
 			if(em!=null)
 			{
 				em.close();
-			}
-		}
-		String[] ary = menuids.split("\\|");
-		for(String tmp:ary)
-		{
-			if(!"".equals(tmp))
-			{
-				PositionMenu menu = new PositionMenu();
-				menu.setRoleid(typeid);
-				menu.setMenuid(Integer.parseInt(tmp));
-				dao.save(menu);
 			}
 		}
 		

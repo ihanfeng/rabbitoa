@@ -13,6 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.googlecode.ehcache.annotations.Cacheable;
+import com.googlecode.ehcache.annotations.TriggersRemove;
+import com.googlecode.ehcache.annotations.When;
 import com.zhm.rabbit.oa.repositories.PositionRole;
 import com.zhm.rabbit.oa.repositories.dao.PositionRepository;
 import com.zhm.rabbit.oa.service.PositionService;
@@ -22,6 +25,7 @@ public class PositionServiceImpl implements PositionService {
 	private PositionRepository dao;
 	@Autowired
 	private EntityManagerFactory emf;
+	@Cacheable(cacheName="rabbitPosition") 
 	public List<PositionRole> findAll() {
 		// TODO Auto-generated method stub
 		List<PositionRole> result=null;
@@ -154,7 +158,7 @@ public class PositionServiceImpl implements PositionService {
 		}
 		return result;
 	}
-
+	@TriggersRemove(cacheName="rabbitPosition",when=When.AFTER_METHOD_INVOCATION,removeAll = true)
 	public void save(PositionRole dept) {
 		// TODO Auto-generated method stub
 		dao.save(dept);
@@ -164,6 +168,7 @@ public class PositionServiceImpl implements PositionService {
 		// TODO Auto-generated method stub
 		return dao.findOne(infoid);
 	}
+	@TriggersRemove(cacheName="rabbitPosition",when=When.AFTER_METHOD_INVOCATION,removeAll = true)
 	@Transactional(rollbackFor=Exception.class)
 	public void orderDepts(int currId, int changeId) {
 		// TODO Auto-generated method stub

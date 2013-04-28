@@ -10,6 +10,7 @@ import javax.swing.JTable;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperPrint;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -33,8 +34,9 @@ import com.zhm.rabbit.oa.utils.SearchUtils;
 public class UserController {
 	@Autowired
 	private UserService userService;
+	@RequiresPermissions("/userManager/listAll")
 	@RequestMapping(value="/userManager/listAll")
-	public String listAllUsers(ModelMap model)
+	public String listAllUsers(HttpServletResponse response,ModelMap model)
 	{
 		return "/admin/user/listAll";
 	}

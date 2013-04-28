@@ -146,7 +146,7 @@
 	             }
 	          }
 			 <@shiro.hasPermission name="/userManager/editData">
-				grid.jqGrid('navGrid',"#pInfoContent",{},editOptions,addOptions,{},{multipleSearch:true});
+				grid.jqGrid('navGrid',"#pInfoContent",{addfunc:addGroupUser,addtitle:'管理组成员',edit:false,del:false},editOptions,addOptions,{},{multipleSearch:true});
 			  </@shiro.hasPermission>
 			  <@shiro.lacksPermission name="/userManager/editData">
 				grid.jqGrid('navGrid',"#pInfoContent",{add:false,edit:false,del:false},editOptions,addOptions,{},{multipleSearch:true});
@@ -170,10 +170,56 @@
 				re_pos();
 			},200);
 		})
+		function addGroupUser()
+		{
+			$("#user-dialog").attr("title","新增人员 ");
+				$("#user-dialog").dialog({
+					bgiframe: true,
+					autoOpen: false,
+					resizable: false,
+					width:$(window).width()-80,	height:$(window).height()-50,
+					modal: true,
+					overlay: {	backgroundColor: '#000', opacity: 0.5	},
+					close: function() {	 
+							// Remove the dialog elements
+	                		// Note: this will put the original div element in the dom
+							$(this).dialog("destroy");
+	               			// Remove the left over element (the original div element)
+							//$(this).remove(); 
+					}
+					//open:  function() {	 ... },
+					,
+					buttons: {
+						'确定': function() {
+							var twin = this;
+							var iframeObj = window.frames["selUserFrame"];
+							var selUserids = "";
+							iframeObj.$('#select2 option').each(function()
+							{
+								selUserids+=$(this).val()+"|";
+							});
+							$.ajax({
+								type:'POST',
+								url:'${cpath}/groupUserManager/addUserToGroup',
+								data:{'groupid':'${groupid}','selUserids':selUserids},
+								error:function(){alert("请求错误！");return;},
+								success:function(){
+									alert("操作成功！");
+									$(twin).dialog('close');
+								}
+							});
+						},
+						'取消': function() { 
+							$(this).dialog('close');
+						}
+					}
+				});
+				$("#user-dialog").html($("<iframe />").attr("src", "${cpath}/groupUserManager/preAddUserToGroup?groupid="+${groupid}).attr("width","99%").attr("height","100%").attr("name","selUserFrame").attr("frameBorder","0")).dialog('open');
+		}
 </script>
 <style type="text/css">
 	.ui-widget-content{padding:0px;overflow:hidden;}
-	.ui-button-text{padding-top:0px !important;padding-bottom:0px !important;};
+	.ui-button-text{padding-top:5px !important;padding-bottom:5px !important;};
 </style>
 </head>
 <body>
@@ -182,6 +228,8 @@
 			<table id="infoContent">
     	 	</table>
     	 	<div id="pInfoContent"></div>
+		</div>
+		<div id="user-dialog" style="display:none">
 		</div>
 	</div>
 </body>

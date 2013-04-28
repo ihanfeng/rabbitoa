@@ -1,0 +1,54 @@
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="ehcache.xsd"> 
+         
+    <diskStore path="java.io.tmpdir"/>   
+     <!--  -->
+	<defaultCache 
+		maxElementsInMemory="10000" 
+		eternal="false" 
+		timeToIdleSeconds="3600" 
+		timeToLiveSeconds="3600" 
+		overflowToDisk="true" 
+		memoryStoreEvictionPolicy="LFU"
+	/>
+	<!-- 部门缓存 -->
+    <cache name="rabbitDepartment"
+           maxElementsInMemory="1000"
+           maxElementsOnDisk="1000"
+           eternal="false"
+           overflowToDisk="true"
+           timeToIdleSeconds="900"
+           timeToLiveSeconds="1800"
+           memoryStoreEvictionPolicy="LFU"
+            />
+    <!-- 职位缓存 -->
+   <cache name="rabbitPosition"
+           maxElementsInMemory="1000"
+           maxElementsOnDisk="1000"
+           eternal="false"
+           overflowToDisk="true"
+           timeToIdleSeconds="900"
+           timeToLiveSeconds="1800"
+           memoryStoreEvictionPolicy="LFU"
+            />
+   <!-- 菜单缓存 -->
+  	<cache name="rabbitAllMenus"
+           maxElementsInMemory="1000"
+           maxElementsOnDisk="1000"
+           eternal="false"
+           overflowToDisk="true"
+           timeToIdleSeconds="900"
+           timeToLiveSeconds="1800"
+           memoryStoreEvictionPolicy="LFU"
+            />
+  	<!-- 菜单分类缓存 -->
+  	<cache name="rabbitTypeMenus"
+           maxElementsInMemory="1000"
+           maxElementsOnDisk="1000"
+           eternal="false"
+           overflowToDisk="true"
+           timeToIdleSeconds="900"
+           timeToLiveSeconds="1800"
+           memoryStoreEvictionPolicy="LFU"
+            />
+</ehcache>

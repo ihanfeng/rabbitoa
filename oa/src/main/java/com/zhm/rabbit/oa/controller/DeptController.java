@@ -2,7 +2,6 @@ package com.zhm.rabbit.oa.controller;
 
 import java.util.List;
 
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -25,6 +24,7 @@ public class DeptController {
 	@RequestMapping(value="/deptManager/listAll/getJson")
 	public @ResponseBody GridResultBean listJson(String sidx,String sord,int page,int rows)
 	{
+		
 		List<Department> depts = deptService.findAll();
 		GridResultBean result = new GridResultBean();
 		result.setPage(1);
