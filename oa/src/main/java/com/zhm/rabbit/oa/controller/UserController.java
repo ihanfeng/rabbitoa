@@ -110,9 +110,9 @@ public class UserController {
 		boolean isExists = userService.findUserExistsByMobile(mobile);
 		return String.valueOf(isExists);
 	}
-	
+	@RequiresPermissions("/userManager/editData")
 	@RequestMapping(value="/userManager/editData")
-	public @ResponseBody String  editData(UserInfo user,String oper,String id)
+	public @ResponseBody String  editData(HttpServletResponse response,UserInfo user,String oper,String id)
 	{
 		if(oper.equals("add"))
 		{

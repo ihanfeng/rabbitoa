@@ -3,6 +3,9 @@ package com.zhm.rabbit.oa.controller;
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -25,8 +28,9 @@ import com.zhm.rabbit.oa.utils.SearchUtils;
 public class GroupController {
 	@Autowired
 	private GroupService groupService;
+	@RequiresPermissions("/groupManager/listAll")
 	@RequestMapping(value="/groupManager/listAll")
-	public String listAll()
+	public String listAll(HttpServletResponse response)
 	{
 		return "/admin/group/listAll";
 	}

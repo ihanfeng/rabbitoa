@@ -2,6 +2,9 @@ package com.zhm.rabbit.oa.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -16,8 +19,9 @@ import com.zhm.rabbit.oa.service.PositionService;
 public class PositionRoleController {
 	@Autowired
 	private PositionService positionService;
+	@RequiresPermissions("/positionManager/listAll")
 	@RequestMapping(value="/positionManager/listAll")
-	public String listAll()
+	public String listAll(HttpServletResponse response)
 	{
 		return "/admin/position/listAll";
 	}
@@ -32,8 +36,9 @@ public class PositionRoleController {
 		result.setRows(proles);
 		return result;
 	}
+	@RequiresPermissions("/positionManager/editPositionTree")
 	@RequestMapping(value="/positionManager/editPositionTree")
-	public String editDeptTree(ModelMap model)
+	public String editDeptTree(HttpServletResponse response,ModelMap model)
 	{
 		List<PositionRole> proles = positionService.findAll();
 		model.addAttribute("proles", proles);

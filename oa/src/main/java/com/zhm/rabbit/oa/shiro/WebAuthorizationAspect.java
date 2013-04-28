@@ -30,16 +30,15 @@ public class WebAuthorizationAspect {
 			// TODO Auto-generated catch block
 			try
 			{
-				HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
-						.getRequestAttributes()).getRequest();
-				HttpServletResponse response = (HttpServletResponse) jp.getArgs()[0];
+				ServletRequestAttributes servletContainer = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+		        HttpServletRequest request = servletContainer.getRequest();  
+		        HttpServletResponse response =(HttpServletResponse) jp.getArgs()[0];
 				response.sendRedirect(request.getContextPath()+"/unauthorized");
 			}
 			catch (IOException e1)
 			{
 				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}//重定向到无权限页面
+			}
 		}
     }
 }

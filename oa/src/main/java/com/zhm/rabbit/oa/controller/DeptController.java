@@ -2,6 +2,9 @@ package com.zhm.rabbit.oa.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -16,8 +19,9 @@ import com.zhm.rabbit.oa.service.DeptService;
 public class DeptController {
 	@Autowired
 	private DeptService deptService;
+	@RequiresPermissions("/deptManager/listAll")
 	@RequestMapping(value="/deptManager/listAll")
-	public String listAll()
+	public String listAll(HttpServletResponse response)
 	{
 		return "/admin/dept/listAll";
 	}
@@ -34,8 +38,9 @@ public class DeptController {
 		return result;
 	}
 	
+	@RequiresPermissions("/deptManager/editDeptTree")
 	@RequestMapping(value="/deptManager/editDeptTree")
-	public String editDeptTree(ModelMap model)
+	public String editDeptTree(HttpServletResponse response,ModelMap model)
 	{
 		List<Department> depts = deptService.findAll();
 		model.addAttribute("depts", depts);
