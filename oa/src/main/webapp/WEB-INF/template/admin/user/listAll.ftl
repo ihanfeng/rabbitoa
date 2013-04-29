@@ -104,7 +104,7 @@
 		    	,
 		    	ondblClickRow: function(rowid) {
 		    		<@shiro.hasPermission name="/userManager/editData">
-				   		 jQuery(this).jqGrid('editGridRow', rowid);
+				   		 jQuery(this).jqGrid('editGridRow', rowid,editOptions);
 				    </@shiro.hasPermission>
 				    <@shiro.lacksPermission name="/userManager/editData">
 				    	alert("您没有权限编辑！请联系管理员授权！");
@@ -126,6 +126,8 @@
 	                 dlgDiv[0].style.top = Math.round((parentHeight-dlgHeight)/2) + "px";
 	                 dlgDiv[0].style.left = Math.round((parentWidth-dlgWidth)/2) + "px";
 	             },
+	             reloadAfterSubmit:true, beforeSubmit:validate_edit,
+	             reloadAfterSubmit:true, beforeSubmit:validate_edit,
 				 serializeEditData: function(data){ 
 				    return $.param($.extend({},data,{id:0}));
 			     }
@@ -143,7 +145,9 @@
 	                 //       is larger as the browser window
 	                 dlgDiv[0].style.top = Math.round((parentHeight-dlgHeight)/2) + "px";
 	                 dlgDiv[0].style.left = Math.round((parentWidth-dlgWidth)/2) + "px";
-	             }
+	             },
+	             reloadAfterSubmit:true, beforeSubmit:validate_edit,
+	             reloadAfterSubmit:true, beforeSubmit:validate_edit
 	          }
 	          <@shiro.hasPermission name="/userManager/editData">
 				grid.jqGrid('navGrid',"#pInfoContent",{},editOptions,addOptions,{},{multipleSearch:true});
@@ -165,6 +169,35 @@
 			  grid.jqGrid('navButtonAdd',"#pInfoContent",parameters);
 			re_pos();
       });
+      function validate_edit(postdata,obj)
+      {
+      	  var email = postdata.email;
+      	  var mobile = postdata.mobile;
+      	  var result=null;
+      	  $.ajax({
+      	  	async : false,
+      	  	type:'POST',
+      	  	url:'${cpath}/userManager/checkUserEmailMobileExists',
+      	  	data:{"email":email,"mobile":mobile},
+      	  	error:function(){return [false, "请求错误"];},
+      	  	success:function(msg)
+      	  	{
+      	  		if(msg=='1')
+      	  		{
+      	  			result =  [false, '邮箱已经存在'];
+      	  		}
+      	  		else if(msg=='2')
+      	  		{
+      	  			result =  [false, '手机号码已经存在'];
+      	  		}
+      	  		else
+      	  		{
+      	  			result =  [true , ''];
+      	  		}
+      	  	}
+      	  });
+      	  return result;
+      }
        function exportData()
        {
        	   $("#export-dialog").attr("title","导出数据    (请选择导出格式)");

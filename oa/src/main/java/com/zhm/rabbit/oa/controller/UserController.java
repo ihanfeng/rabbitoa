@@ -89,27 +89,27 @@ public class UserController {
 		return "/admin/user/add";
 	}
 	/**
-	 * 
-	 * @return
-	 * 验证邮箱地址是否已经存在
-	 */
-	@RequestMapping(value="/userManager/validateUserEmailExists")
-	public @ResponseBody String validateUserEmailExists(String email)
-	{
-		boolean isExists = userService.findUserExistsByEmail(email);
-		return String.valueOf(isExists);
-	}
-	/**
-	 * 验证手机号是否存在
+	 * 验证手机号和邮箱地址是否存在
 	 * @param mobile
 	 * @return
 	 */
-	@RequestMapping(value="/userManager/validateUserMobileExists")
-	public @ResponseBody String validateUserMobileExists(String mobile)
+	@RequestMapping(value="/userManager/checkUserEmailMobileExists")
+	public @ResponseBody String checkUserEmailMobileExists(String mobile,String email)
 	{
-		boolean isExists = userService.findUserExistsByMobile(mobile);
-		return String.valueOf(isExists);
+		boolean isExists1 = userService.findUserExistsByMobile(mobile);
+		if(!isExists1)
+		{
+			return "2";
+		}
+		boolean isExists2 = userService.findUserExistsByEmail(email);
+		if(!isExists2)
+		{
+			return "1";
+		}
+		return "0";
 	}
+	
+	
 	@RequiresPermissions("/userManager/editData")
 	@RequestMapping(value="/userManager/editData")
 	public @ResponseBody String  editData(HttpServletResponse response,UserInfo user,String oper,String id)
